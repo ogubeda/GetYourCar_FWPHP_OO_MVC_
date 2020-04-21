@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modules>
+    <module>
+        <name>home</name>
+        <uri>home</uri>
+    </module>
+    <module>
+        <name>shop</name>
+        <uri>shop</uri>
+    </module>
+    <module>
+        <name>services</name>
+        <uri>services</uri>
+    </module>
+    <module>
+        <name>contact</name>
+        <uri>contact</uri>
+    </module>
+    <module>
+        <name>log-in</name>
+        <uri>log-in</uri>
+    </module>
+    <module>
+        <name>cart</name>
+        <uri>cart</uri>
+    </module>
+    <module>
+        <name>our-cars</name>
+        <uri>our-cars</uri>
+    </module>
+    <module>
+        <name>our-brands</name>
+        <uri>our-brands</uri>
+    </module>
+    <module>
+        <name>user-order</name>
+        <uri>user-order</uri>
+    </module>
+</modules>
