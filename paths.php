@@ -16,3 +16,10 @@ define ('UTILS', SITE_ROOT . 'utils/'); // Utils Path
 // Contact
 define ('MODEL_PATH_CONTACT', SITE_ROOT . 'module/contact/model/');
 define ('VIEW_PATH_CONTACT', SITE_ROOT . 'module/contact/view/');
+
+// Friendly
+define('URL_FRIENDLY', TRUE);
+
+if ($_GET['op'] == 'get') {
+    echo json_encode(URL_FRIENDLY);
+}

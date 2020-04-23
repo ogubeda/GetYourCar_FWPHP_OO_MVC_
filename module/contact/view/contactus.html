@@ -6,10 +6,26 @@
 <div  class = "container separe-menu">
 	<div>
 		<h3>Send us an email</h3>
-		<form class = "default-form">
-			<input type = "text" id = "contact-name" name = "contact-name"/>
-			<input type = "text" id = "contact-email"/>
-			<textarea rows="4" cols="50" name="message" id = "message"></textarea>
+		<form id = "send-email-form" class = "default-form">
+			<div>
+				<input type = "text" id = "contact-name" name = "contact-name" placeholder="Name"/>
+			</div>
+			<div>
+				<input type = "text" id = "contact-email" placeholder="Email"/>
+			</div>
+			<div>
+				<select name = "contact-matter" id = "contact-matter">
+					<option selected value = "">Select an option</option>
+					<option value = "Problems with the page">Problems with the page</option>
+					<option value = "Suggestions">Suggestions</option>
+					<option value = "Issues when trying to register">Issues when trying to register</option>
+					<option value = "Issues when trying to log in">Issues when trying to register</option>
+					<option value = "Others">Others</option>
+				</select>
+			</div>
+			<div>
+				<textarea rows="4" cols="50" name="message" id = "message" placeholder="Message"></textarea>
+			</div>
 			<input type = "button" id = "send-email" class = "default-button" value = "Send"/>
 		</form>
 	</div>

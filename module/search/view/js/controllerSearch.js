@@ -1,7 +1,7 @@
 function listDropProvinces() {
     //////
     $.ajax({
-        url: 'module/search/controller/controllerSearch.php?op=listProvinces',
+        url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=listProvinces',
         type: 'POST',
         dataType: 'JSON'
     }).done(function(data) {
@@ -16,7 +16,7 @@ function listDropProvinces() {
 function listDropCon(data = undefined) {
     //////
     $.ajax({
-        url: 'module/search/controller/controllerSearch.php?op=listCon',
+        url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=listCon',
         type: 'POST',
         dataType: 'JSON',
         data: data
@@ -59,7 +59,7 @@ function autoComplete() {
         }// end_if
         //////
         $.ajax({
-            url: 'module/search/controller/controllerSearch.php?op=autoComplete',
+            url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=autoComplete',
             type: 'POST',
             data: sData,
             dataType: 'JSON'

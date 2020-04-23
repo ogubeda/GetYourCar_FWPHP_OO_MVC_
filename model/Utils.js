@@ -15,32 +15,36 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
 
 function loadMenu() {
     //////
-    $('<li></li>').html('<a href = "index.php?page=shop&op=list" class = "menu-btn" id  = "shop" data-tr = "Shop"></a>').appendTo('#fixed-menu');
-    $('<li></li>').html('<a href="index.php?page=services" class = "menu-btn" id = "services" data-tr="Services"></a>').appendTo('#fixed-menu');
-    $('<li></li>').html('<a href="index.php?page=contact&op=list" class = "menu-btn" id = "contact" data-tr="Contact Us"></a>').appendTo('#fixed-menu');
-    //////
-    ajaxPromise('module/login/controller/controllerLogIn.php?op=returnSession', 'POST', 'JSON', {secureSession: localStorage.getItem('secureSession')})
-    .then(function(data) {
-        $('<li></li>').html('<a class = "menu-btn" id = "profile-btn" style = "background : url(' + data.avatar + ') no-repeat; padding-left: 30px; margin-left: 15px">' + 
-                            '<span style= "float: left;">' + data.user + '</span></a>').attr({'class': 'item-sideNav', 'id': 'profile-submenu'}).appendTo('#fixed-menu');
+    Promise.all([friendlyURL('?page=shop'), friendlyURL('?page=services'), friendlyURL('?page=contact'),])
+    .then(function(values) {
+        $('<li></li>').html('<a href = "' + values[0] + '" class = "menu-btn" id  = "shop" data-tr = "Shop">Shop</a>').appendTo('#fixed-menu');
+        $('<li></li>').html('<a href="' + values[1] + '" class = "menu-btn" id = "services" data-tr="Services">Services</a>').appendTo('#fixed-menu');
+        $('<li></li>').html('<a href="' + values[2] +'" class = "menu-btn" id = "contact" data-tr="Contact Us">Contact Us</a>').appendTo('#fixed-menu');
         //////
-        $('<ul></ul>').attr({'class': 'sub-menu'}).html('<li><a href = "index.php?page=profile&op=list" id = "profile">Profile</a></li>' + 
-                                                        '<li><a id = "log-out-btn">Log Out</a></li>').appendTo('#profile-submenu');
-        //////
-        if (data.type === 'admin') {
-            adminMenu();
-        }else if (data.type === 'client') {
-            clientMenu();
-        }// end_else
-        //////
-        addActivity();
-        logOutClick();
-        localStorage.setItem('secureSession', data.secureSession);
-    }).catch(function() {
-        $('<li></li>').html('<a href = "index.php?page=log-in&op=list" class = "menu-btn" id = "logIn">Log In</a>').appendTo('#fixed-menu');
-    }).then(function() {
-        fixedMenu();
+        ajaxPromise('http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=returnSession', 'POST', 'JSON', {secureSession: localStorage.getItem('secureSession')})
+        .then(function(data) {
+            $('<li></li>').html('<a class = "menu-btn" id = "profile-btn" style = "background : url(' + data.avatar + ') no-repeat; padding-left: 30px; margin-left: 15px">' + 
+                                '<span style= "float: left;">' + data.user + '</span></a>').attr({'class': 'item-sideNav', 'id': 'profile-submenu'}).appendTo('#fixed-menu');
+            //////
+            $('<ul></ul>').attr({'class': 'sub-menu'}).html('<li><a href = "index.php?page=profile&op=list" id = "profile">Profile</a></li>' + 
+                                                            '<li><a id = "log-out-btn">Log Out</a></li>').appendTo('#profile-submenu');
+            //////
+            if (data.type === 'admin') {
+                adminMenu();
+            }else if (data.type === 'client') {
+                clientMenu();
+            }// end_else
+            //////
+            addActivity();
+            logOutClick();
+            localStorage.setItem('secureSession', data.secureSession);
+        }).catch(function() {
+            $('<li></li>').html('<a href = "index.php?page=log-in&op=list" class = "menu-btn" id = "logIn">Log In</a>').appendTo('#fixed-menu');
+        }).then(function() {
+            fixedMenu();
+        });
     });
+    
     //////
 }// end_loadMenu
 //////
@@ -86,7 +90,7 @@ function logOutClick() {
 
 function logOut() {
     $.ajax({
-        url: 'module/login/controller/controllerLogIn.php?op=logOut',
+        url: 'http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=logOut',
         type: 'POST',
         dataType: 'JSON'
     }).done(function() {

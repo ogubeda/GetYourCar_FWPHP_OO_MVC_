@@ -6,7 +6,7 @@ function changeLang(lang) {
     var elmnts = document.querySelectorAll('[data-tr]');
     //////
     $.ajax({
-        url: 'view/lang/' + lang + '.json',
+        url: 'http://192.168.0.182/frameworkCars.v.1.3/view/lang/' + lang + '.json',
             type: 'POST',
             dataType: 'JSON',
             success: function (data) {

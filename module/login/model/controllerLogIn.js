@@ -36,7 +36,7 @@ function checkLogIn() {
 
 function requestLogIn(user) {
     //////
-    ajaxPromise('module/login/controller/controllerLogIn.php?op=logIn', 'POST', 'JSON', user)
+    ajaxPromise('http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=logIn', 'POST', 'JSON', user)
     .then(function(data) {
         localStorage.setItem('secureSession', data);
     }).then(function() {
@@ -105,7 +105,7 @@ function checkRegister() {
         if (error == false) {
             user.password = CryptoJS.MD5(user.password).toString();
             $.ajax({
-                url: 'module/login/controller/controllerLogIn.php?op=register',
+                url: 'http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=register',
                 type: 'POST',
                 dataType: 'JSON',
                 data: user
