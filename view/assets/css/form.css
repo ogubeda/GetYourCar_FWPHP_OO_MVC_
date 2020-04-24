@@ -86,3 +86,41 @@
     border-radius: 5px;
     box-shadow: 0px 0px 10px 1px rgb(8, 8, 8);
 }
+
+.default-form .tittle {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.default-form .text {
+    width: 50%;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 5px 15px;
+    background-color: #2a292b;
+    color: #0ca3e9;
+    font-size: 18px;
+}
+.default-form .area {
+    width: 50%;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 5px 15px;
+    background-color: #2a292b;
+    color: #0ca3e9;
+    font-size: 18px;
+    resize: none;
+}
+select {
+    width: 50%;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 5px 15px;
+    background-color: #2a292b;
+    color: #7c7b7c;
+    font-size: 16px;
+ }

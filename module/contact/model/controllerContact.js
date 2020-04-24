@@ -44,9 +44,10 @@ function sendEmail(content) {
         ajaxPromise(data, 'POST', 'JSON', content)
         .then(function(data) {
             console.log(data);
-            toastr.info('Email sended');
+            toastr.success('Email sended');
             $('#send-email-form').trigger('reset');
         }).catch(function(error) {
+            toastr.error('Something happend when trying to send.' ,'Error');
             console.log(error);
         });
     });

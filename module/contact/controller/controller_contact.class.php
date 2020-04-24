@@ -8,10 +8,7 @@ class controller_contact {
     }// end_construct
 
     function list() {
-        require (VIEW_PATH_INC . 'topPageContact.php');
-        require (VIEW_PATH_INC . 'menu.html');
-        require (VIEW_PATH_CONTACT . 'contactus.html');
-        require (VIEW_PATH_INC . 'content.html');
+        loadView(VIEW_PATH_INC . 'topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
     }// end_list
 
     function sendEmail() {

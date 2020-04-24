@@ -5,16 +5,16 @@
 </div>
 <div  class = "container separe-menu">
 	<div>
-		<h3>Send us an email</h3>
 		<form id = "send-email-form" class = "default-form">
+			<h3 class = "tittle">Send us an email</h3>
 			<div>
-				<input type = "text" id = "contact-name" name = "contact-name" placeholder="Name"/>
+				<input type = "text" class = "text" id = "contact-name" name = "contact-name" placeholder="Name"/>
 			</div>
 			<div>
-				<input type = "text" id = "contact-email" placeholder="Email"/>
+				<input type = "text" class = "text" id = "contact-email" placeholder="Email" style = "margin-top: 15px"/>
 			</div>
 			<div>
-				<select name = "contact-matter" id = "contact-matter">
+				<select class = "select" name = "contact-matter" id = "contact-matter" style = "margin-top: 15px;">
 					<option selected value = "">Select an option</option>
 					<option value = "Problems with the page">Problems with the page</option>
 					<option value = "Suggestions">Suggestions</option>
@@ -24,7 +24,7 @@
 				</select>
 			</div>
 			<div>
-				<textarea rows="4" cols="50" name="message" id = "message" placeholder="Message"></textarea>
+				<textarea class = "area" rows="4" cols="50" name="message" id = "message" placeholder="Message" style = "margin-top:15px"></textarea>
 			</div>
 			<input type = "button" id = "send-email" class = "default-button" value = "Send"/>
 		</form>
