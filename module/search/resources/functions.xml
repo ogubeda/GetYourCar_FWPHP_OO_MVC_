@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>listProvinces</name>
+        <uri>listProvinces</uri>
+    </function>
+    <function>
+        <name>listCon</name>
+        <uri>listCon</uri>
+    </function>
+    <function>
+        <name>autoComplete</name>
+        <uri>autoComplete</uri>
+    </function>
+</functions>

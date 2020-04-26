@@ -39,12 +39,14 @@ function sendFav() {
 
 function sendFavs() {
     //////
-    ajaxPromise('module/shop/controller/controllerShop.php?op=sendFavs', 'POST', 'JSON')
-    .then(function(data) {
-        for (row in data) {
-            $('#' + data[row].carPlate).find('#fav-btn').addClass('active-fav-btn');
-        }// end_for
-    }).catch(function(error) {
-        console.log(error);
-    }); // end_sendFavs
+    friendlyURL('?page=shop&op=sendFavs').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON')
+        .then(function(data) {
+            for (row in data) {
+                $('#' + data[row].carPlate).find('#fav-btn').addClass('active-fav-btn');
+            }// end_for
+        }).catch(function(error) {
+            console.log(error);
+        }); // end_sendFavs
+    });
 }// end_sendFavs

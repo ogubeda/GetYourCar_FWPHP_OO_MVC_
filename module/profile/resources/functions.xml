@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>list</name>
+        <uri>list</uri>
+    </function>
+    <function>
+        <name>sendData</name>
+        <uri>sendData</uri>
+    </function>
+    <function>
+        <name>sendUserFavs</name>
+        <uri>sendUserFavs</uri>
+    </function>
+    <function>
+        <name>deleteProfile</name>
+        <uri>deleteProfile</uri>
+    </function>
+</functions>

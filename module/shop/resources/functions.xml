@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>list</name>
+        <uri>list</uri>
+    </function>
+    <function>
+        <name>sendInfo</name>
+        <uri>sendInfo</uri>
+    </function>
+    <function>
+        <name>read</name>
+        <uri>read</uri>
+    </function>
+    <function>
+        <name>sendFilters</name>
+        <uri>sendFilters</uri>
+    </function>
+    <function>
+        <name>sendAllCon</name>
+        <uri>sendAllCon</uri>
+    </function>
+    <function>
+        <name>filter</name>
+        <uri>filter</uri>
+    </function>
+    <function>
+        <name>viewUp</name>
+        <uri>viewUp</uri>
+    </function>
+    <function>
+        <name>countProd</name>
+        <uri>countProd</uri>
+    </function>
+    <function>
+        <name>sendFavs</name>
+        <uri>sendFavs</uri>
+    </function>
+    <function>
+        <name>updateFavs</name>
+        <uri>updateFavs</uri>
+    </function>
+</functions>

@@ -1,16 +1,16 @@
 function loadSlider() {
     //////
-    $.ajax({
-        url: 'module/home/controller/controllerHomePage.php?op=homePageSlide',
-        type: 'GET',
-        dataType: 'JSON'
-    }).done(function(data) {
-        //////
-        for (row in data) {
-            $('<div></div>').attr({'id': data[row].carPlate, "class": "single-slide", "style": "background-image: url(view/img/allCarsImg/" + data[row].image + ")"}).appendTo('.hero-slider')
-            .html('<div class= "slide-content text-center"><h2>' + data[row].brand + " " + data[row].model + " " + data[row].carPlate + '</h2></div>');
-        }// end_for
-
+    friendlyURL('?page=home&op=homePageSlide').then(function(data) {
+        $.ajax({
+            url: data,
+            type: 'GET',
+            dataType: 'JSON'
+        }).done(function(data) {
+            //////
+            for (row in data) {
+                $('<div></div>').attr({'id': data[row].carPlate, "class": "single-slide", "style": "background-image: url(view/img/allCarsImg/" + data[row].image + ")"}).appendTo('.hero-slider')
+                .html('<div class= "slide-content text-center"><h2>' + data[row].brand + " " + data[row].model + " " + data[row].carPlate + '</h2></div>');
+            }// end_for
             $(".hero-slider").addClass('owl-carousel');
             $(".owl-carousel").owlCarousel({
                 items: 1,
@@ -26,9 +26,10 @@ function loadSlider() {
                     '<i class="fa fa-angle-right"></i>'
                 ]
             });
-    }).fail(function(error) {
-        console.log(error);
-        // window.location.href = "index.php?page=error503";
+        }).fail(function(error) {
+            console.log(error);
+            // window.location.href = "index.php?page=error503";
+        });
     });
     //////
 }// end_loadSlider
@@ -39,15 +40,17 @@ function loadCatBrands(loadeds = 0) {
     let items = 3;
     let loaded = loadeds;
     //////
-    ajaxPromise('module/home/controller/controllerHomePage.php?op=homePageCat', 'POST', 'JSON', {items: items, loaded: loaded}).then(function(data) {
-        for (row in data) {
-            let brand = data[row].brand.replace(/ /g, "_");
-            $('<div></div>').attr({'id': brand, 'class':'col-md-4 single-service-2'}).appendTo('#containerCategories');
-            $('<div></div>').attr({'class':'inner'}).html('<img src = "' + data[row].image + '" style = "max-width: 100%; height: 100px;"><h4 style = "padding-top: 25px">' + data[row].brand + '</h4></img>').appendTo('#' + brand);
-        }// end_for
-        //////
-    }).catch(function() {
-        //window.location.href = 'index.php?page=error503';
+    friendlyURL('?page=home&op=homePageCat').then(function(data) {
+        ajaxPromise(data, 'POST', 'JSON', {items: items, loaded: loaded}).then(function(data) {
+            for (row in data) {
+                let brand = data[row].brand.replace(/ /g, "_");
+                $('<div></div>').attr({'id': brand, 'class':'col-md-4 single-service-2'}).appendTo('#containerCategories');
+                $('<div></div>').attr({'class':'inner'}).html('<img src = "' + data[row].image + '" style = "max-width: 100%; height: 100px;"><h4 style = "padding-top: 25px">' + data[row].brand + '</h4></img>').appendTo('#' + brand);
+            }// end_for
+            //////
+        }).catch(function() {
+            //window.location.href = 'index.php?page=error503';
+        });
     });
 }// end_loadCatBrands
 //////
@@ -155,21 +158,23 @@ function redirectShop() {
     $(document).on('click', '.single-service-2', function() {
         var brand = this.getAttribute('id').replace("_", " ");
         //////
-        $.ajax({
-            url: 'module/home/controller/controllerHomePage.php?op=incrementView',
-            type: 'POST',
-            data: {brand: brand}
-        }).done(function(data) {
-            console.log(data);
-            if (data == 1) {
-                var filter = {'brand': [brand]};
-                localStorage.setItem('filters', JSON.stringify(filter));
-                localStorage.setItem('currentPage', 'shop');
-                window.location.href = "index.php?page=shop&op=list";
-            }else {
-                console.log('Error when trying to find the brand.');
-            }// end_else
-        }); // end_done 
+        friendlyURL('?page=home&op=incrementView').then(function(data) {
+            $.ajax({
+                url: data,
+                type: 'POST',
+                data: {brand: brand}
+            }).done(function(data) {
+                console.log(data);
+                if (data == 1) {
+                    var filter = {'brand': [brand]};
+                    localStorage.setItem('filters', JSON.stringify(filter));
+                    localStorage.setItem('currentPage', 'shop');
+                    window.location.href = "index.php?page=shop&op=list";
+                }else {
+                    console.log('Error when trying to find the brand.');
+                }// end_else
+            }); // end_done 
+        });
     });
     //////
     $(document).on('click', '.single-slide', function() {

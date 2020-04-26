@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>list</name>
+        <uri>list</uri>
+    </function>
+    <function>
+        <name>storeCart</name>
+        <uri>storeCart</uri>
+    </function>
+    <function>
+        <name>getCart</name>
+        <uri>getCart</uri>
+    </function>
+    <function>
+        <name>removeCart</name>
+        <uri>removeCart</uri>
+    </function>
+    <function>
+        <name>loadDataCart</name>
+        <uri>loadDataCart</uri>
+    </function>
+    <function>
+        <name>updateDays</name>
+        <uri>updateDays</uri>
+    </function>
+    <function>
+        <name>checkOut</name>
+        <uri>checkOut</uri>
+    </function>
+    <function>
+        <name>selectCart</name>
+        <uri>selectCart</uri>
+    </function>
+    <function>
+        <name>addDiscCode</name>
+        <uri>addDiscCode</uri>
+    </function>
+    <function>
+        <name>removeDiscCode</name>
+        <uri>removeDiscCode</uri>
+    </function>
+</functions>
