@@ -23,6 +23,9 @@ define ('VIEW_PATH_HOME', SITE_ROOT . 'module/home/view/');
 //Shop
 define ('VIEW_PATH_SHOP', SITE_ROOT . 'module/shop/view/');
 
+//Login
+define('VIEW_PATH_LOGIN', SITE_ROOT. 'module/login/view/');
+
 // Friendly
 define('URL_FRIENDLY', TRUE);
 

@@ -3,7 +3,7 @@ function loadShop(modal = false, itemsPage = 12, totalItems = 0) {
     var filters = localStorage.getItem('filters') || false;
     //////
     if ((filters != false)) {
-        var url = '?page=shop&op=filter&filters=' + filters;
+        var url = '?page=shop&op=filter&param=' + filters;
         if ($('#remove-filters').length == 0) {
             $('<button></button>').attr({'class':'default-button fadeInLeftAnimation', 'id': 'remove-filters'}).appendTo('.filter-content').html('Remove filters');
         }
@@ -229,7 +229,7 @@ function redirectDetails() {
         if (!$(event.target).is('#fav-btn, svg, path, #cart-btn')) {
             localStorage.setItem('currentPage', 'shop-details');
             localStorage.setItem('carPlate', $(this).parent().attr('name'));
-            //location.reload();
+            location.reload();
         }// end_if
     });
 }// end_redirectDetails
@@ -282,7 +282,7 @@ function loadPagination() {
     let localFilters = undefined;
     //////
     if (localStorage.getItem('filters')) {
-        localFilters = {filters: localStorage.get('filters')};
+        localFilters = {filters: localStorage.getItem('filters')};
     }// end_if
     //////
     friendlyURL('?page=shop&op=countProd').then(function(data) {

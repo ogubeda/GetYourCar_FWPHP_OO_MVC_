@@ -9,16 +9,12 @@
         <uri>shop</uri>
     </module>
     <module>
-        <name>services</name>
-        <uri>services</uri>
-    </module>
-    <module>
         <name>contact</name>
         <uri>contact</uri>
     </module>
     <module>
-        <name>log-in</name>
-        <uri>log-in</uri>
+        <name>login</name>
+        <uri>login</uri>
     </module>
     <module>
         <name>cart</name>
