@@ -179,6 +179,18 @@ class Querys {
         return $this;
     }// end_queryToArray
 
+    public function toJSON() {
+        if (!empty($this -> getResolve())) {
+            $this -> resolve = json_encode($this -> resolve);
+        }else if ($this -> getResult()) {
+            $this -> resolve = json_encode($this -> result);
+        }else {
+            $this -> resolve = 'Empty.';
+        }// end_else
+        //////
+        return $this;
+    }// end_toJSON
+
     public function getResolve() {
         return $this -> resolve;
     }//end_getResolve

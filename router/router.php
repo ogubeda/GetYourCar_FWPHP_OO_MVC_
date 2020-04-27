@@ -57,5 +57,4 @@ class router {
     }// end_loadFunction
 }// end_router
 //////
-$router = new router();
-$router -> rountingStart();
+(new router) -> rountingStart();
