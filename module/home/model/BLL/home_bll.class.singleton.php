@@ -1,6 +1,5 @@
 <?php
 //////
-require_once(SITE_ROOT . 'module/home/model/DAO/home_dao.class.singleton.php');
 class home_bll {
     private $dao;
     static $_instance;

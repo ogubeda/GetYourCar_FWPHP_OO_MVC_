@@ -1,10 +1,8 @@
 <?php
 //////
-$path = $_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/';
-require_once ($path . 'model/Querys.php');
-
-class DB {
+class db {
     //////
+    static $_instance;
     public static function enable() {
         $ini_file = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/model/api-keys/apis.ini');
         $connection = mysqli_connect($ini_file['IPAddress'], $ini_file['username'], $ini_file['password'], $ini_file['dataBase']);
@@ -20,7 +18,10 @@ class DB {
     }// end_close
     
     public static function query() {
-        return new Querys();
+        if (!(self::$_instance instanceof querys)) {
+            self::$_instance = new querys();
+        }
+        return self::$_instance;
     }// end_query
 
 }// end_DB

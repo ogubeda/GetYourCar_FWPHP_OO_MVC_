@@ -1,10 +1,5 @@
 <?php
 //////
-$path = $_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/';
-//////
-include ($path . 'model/DAOGeneral.php');
-include ($path . 'model/DB.php');
-//////
 class shop_dao {
     static $_instance;
     //////
@@ -20,52 +15,52 @@ class shop_dao {
         $colsArr = array('brand', 'seats', 'doors', 'typeEngine', 'gearShift');
         $returnArrBrands = array();
         foreach ($colsArr as $row) {
-            $returnArrBrands[$row] = DB::query() -> select([$row], 'allCars', true) -> order([$row]) -> execute() -> queryToArray(true) -> getResolve();
+            $returnArrBrands[$row] = db::query() -> select([$row], 'allCars', true) -> order([$row]) -> execute() -> queryToArray(true) -> getResolve();
         }//end_foreach
         //////
         return $returnArrBrands;
     }// end_selectFilter
 
     public function selectShop($totalItems, $itemsPage) {
-        return DB::query() -> select(['carPlate', 'brand', 'model', 'image', 'price'], 'allCars') 
+        return db::query() -> select(['carPlate', 'brand', 'model', 'image', 'price'], 'allCars') 
                             -> order(['views'], 'DESC') -> limit($itemsPage, $totalItems) -> execute() -> queryToArray(true) -> toJSON();
     }// end_selectShop
 
     public function countProds() {
-        return DB::query() -> select(['*'], 'allCars') -> execute() -> count() -> toJSON();
+        return db::query() -> select(['*'], 'allCars') -> execute() -> count() -> toJSON();
     }// end_countProds
 
     public function filterShop($filters, $totalItems, $itemsPage) {
-        return DB::query() -> select(['carPlate', 'brand', 'model', 'image', 'price'], 'allCars') 
+        return db::query() -> select(['carPlate', 'brand', 'model', 'image', 'price'], 'allCars') 
                             -> where($filters) -> limit($itemsPage, $totalItems) -> execute() -> queryToArray(true) -> toJSON();
     }// end_filterShop
 
     public function selectDetails($carPlate) {
-        return DB::query() -> select(['*'], 'allCars') -> where(['carPlate' => [$carPlate]]) -> execute() -> queryToArray() -> toJSON();    
+        return db::query() -> select(['*'], 'allCars') -> where(['carPlate' => [$carPlate]]) -> execute() -> queryToArray() -> toJSON();    
     }// end_selectDetails
 
     public function selectAllCon() {
-        return DB::query() -> select(['*'], 'concessionaire') -> execute() -> queryToArray(true) -> toJSON();
+        return db::query() -> select(['*'], 'concessionaire') -> execute() -> queryToArray(true) -> toJSON();
     }// end_selectAllCon
 
     public function viewUpCar($carPlate) {
-        return DB::query() -> update(['views' => 'views + 1'], 'allCars') -> where(['carPlate' => [$carPlate]]) -> execute() -> toJSON();
+        return db::query() -> update(['views' => 'views + 1'], 'allCars') -> where(['carPlate' => [$carPlate]]) -> execute() -> toJSON();
     }// end_viewUpCar
 
     public function checkCarFav($carPlate, $username) {
-        return DB::query() -> select(['*'], 'userFav') -> where(['username' => [$username], 'carPlate' => [$carPlate]]) -> execute() -> count();
+        return db::query() -> select(['*'], 'userFav') -> where(['username' => [$username], 'carPlate' => [$carPlate]]) -> execute() -> count();
     }// end_checkCar
  
     public function insertFav($carPlate, $username) {
-        return DB::query() -> insert([['carPlate' => $carPlate, 'username' => $username]], 'userFav') -> execute() -> toJSON();
+        return db::query() -> insert([['carPlate' => $carPlate, 'username' => $username]], 'userFav') -> execute() -> toJSON();
     }// end_inserFav
 
     public function deleteFav($carPlate, $username) {
-        return DB::query() -> delete('userFav') -> where(['carPlate' => [$carPlate], 'username' => [$username]]) -> execute() -> toJSON();
+        return db::query() -> delete('userFav') -> where(['carPlate' => [$carPlate], 'username' => [$username]]) -> execute() -> toJSON();
     }// end_deleteFav
 
     public function selectFavs($username) {
-        return DB::query() -> select(['*'], 'userFav') -> where(['username' => [$username]]) -> execute() -> queryToArray(true) -> toJSON();
+        return db::query() -> select(['*'], 'userFav') -> where(['username' => [$username]]) -> execute() -> queryToArray(true) -> toJSON();
     }// end_selectFavs
 
 }// end_QuerysShop

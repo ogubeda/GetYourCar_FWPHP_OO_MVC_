@@ -1,7 +1,5 @@
 <?php
 //////
-require_once(SITE_ROOT . 'module/shop/model/DAO/shop_dao.class.singleton.php');
-//////
 class shop_bll {
     private $dao;
     static $_instance;
@@ -58,5 +56,5 @@ class shop_bll {
             return $this -> dao -> deleteFav($args[0], $args[1]);
         }// end_if
         return $this -> dao -> insertFav($args[0], $args[1]);
-    }// end_if
+    }//
 }// end_shop_bll

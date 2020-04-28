@@ -1,8 +1,6 @@
 <?php
 //////
-require_once ('paths.php');
-include (UTILS . 'common.inc.php');
-include (UTILS . 'mail.inc.php');
+require ('autoload.php');
 ob_start();
 session_start();
 

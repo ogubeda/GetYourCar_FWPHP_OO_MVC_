@@ -1,9 +1,6 @@
 <?php
 //////
-$path = $_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/';
-require_once ('DB.php');
-
-class Querys {
+class querys {
     //////
     private $result;
     private $error;
@@ -154,10 +151,10 @@ class Querys {
         if (!empty($this -> limit)) {
             $this -> query = $this -> query . $this -> limit;
         }
-        $connection = DB::enable();
+        $connection = db::enable();
         $this -> result = mysqli_query($connection, $this -> query);
         $this -> error = mysqli_error($connection);
-        DB::close($connection);
+        db::close($connection);
         //////
         return $this;
     }// end_execute
