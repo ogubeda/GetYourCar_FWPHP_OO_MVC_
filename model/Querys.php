@@ -17,7 +17,7 @@ class Querys {
     public function select($values, $table, $distinct = false) {
         $select = "SELECT ";
         if ($distinct == true) {
-            $select = "DISTINCT ";
+            $select .= "DISTINCT ";
         }// end_if
         if ($values[0] != '*') {
             for ($i = 0; $i < sizeof($values); $i++) {

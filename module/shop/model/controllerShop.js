@@ -75,8 +75,8 @@ function loadFilters() {
                 filter(this.getAttribute('class'), this.getAttribute('name'));
             });
             //////
-        }).catch(() => {
-            console.log('f');
+        }).catch((error) => {
+            console.log(error);
         }); // end_ajaxPromise
     });
     
@@ -178,7 +178,6 @@ function showDetails() {
     //////
     friendlyURL('?page=shop&op=read').then(function(data) {
         ajaxPromise(data, 'POST', 'JSON', {carPlate: localStorage.getItem('carPlate')}).then(function(data) {
-
             friendlyURL('?page=shop&op=viewUp').then(function(url) {
                 $.ajax({
                     url: url,
@@ -214,7 +213,8 @@ function showDetails() {
             detectFav();
             sendFav();
             addToCart();// inside view/js/controllerCart.js
-        }).catch(function() {
+        }).catch(function(error) {
+            console.log(error);
             window.location.href = 'index.php?page=error503'
         }); // end_ajaxPromise
     });
@@ -295,7 +295,7 @@ function loadPagination() {
             let totalItems = 0, totalPages = 0;
             let prevPage = false, nextPage = false;
             //////
-            for (let i = 0; i < data.prods; i++) {
+            for (let i = 0; i < data; i++) {
                 if ((i % 12) == 0) {
                     totalPages = totalPages + 1;
                 }// end_if
@@ -317,8 +317,8 @@ function loadPagination() {
                 loadShop(false, 12, totalItems);
                 $('html, body').animate({scrollTop: $('.site').height()}, 500);
             });
-        }).fail(function() {
-            console.log('Fail when trying to get the products.');
+        }).fail(function(error) {
+            console.log(error);
         }); // end_fail
     });
     

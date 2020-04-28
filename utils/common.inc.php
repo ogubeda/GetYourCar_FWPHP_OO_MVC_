@@ -1,5 +1,4 @@
 <?php
-require_once (SITE_ROOT . 'module/home/model/model/home_model.class.singleton.php');
 //////
 function loadError() {
     require_once (VIEW_PATH_INC . 'topPageHome.php');

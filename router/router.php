@@ -20,16 +20,18 @@ class router {
         try {
             call_user_func(array($this -> loadModule($this -> uriModule), $this -> loadFunction($this -> nameModule, $this -> uriFunction)));
         }catch(Exception $e) {
-            loadError();
+            // loadError();
         }// end_catch
     }// end_routingStart
     
     private function loadModule($uriModule) {
         if (file_exists('resources/modules.xml')) {
+            
             $modules = simplexml_load_file('resources/modules.xml');
             foreach ($modules as $row) {
                 //////
                 if (in_array($uriModule, (Array) $row -> uri)) {
+                    
                     $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php';
                     if (file_exists($path)) {
                         require_once($path);
