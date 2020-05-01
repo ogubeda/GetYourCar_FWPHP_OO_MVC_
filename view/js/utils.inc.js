@@ -17,7 +17,7 @@ function friendlyURL(url) {
             }else {
                 link = '/' + url;
             }// end_else
-            resolve ("http://192.168.0.182/frameworkCars.v.1.3" + link);
+            resolve ("http://" + window.location.hostname + "/frameworkCars.v.1.3" + link);
         }).fail(function(error) {
             reject (error);
         });

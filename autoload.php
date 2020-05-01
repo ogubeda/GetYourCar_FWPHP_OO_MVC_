@@ -1,8 +1,6 @@
 <?php
 //////
 require ('paths.php');
-include (UTILS . 'common.inc.php');
-include (UTILS . 'mail.inc.php');
 //////
 spl_autoload_register(null, false);
 spl_autoload_extensions('.php,.inc.php,.class.php,.class.singleton.php');
@@ -21,6 +19,9 @@ function loadClasses($className) {
         spl_autoload($className);
     }else if (file_exists(SITE_ROOT . 'model/' . $className . '.class.singleton.php')){
         set_include_path(SITE_ROOT . 'model/');
+        spl_autoload($className);
+    }else if (file_exists(SITE_ROOT . 'utils/' . $className . '.inc.php')) {
+        set_include_path(SITE_ROOT . 'utils/');
         spl_autoload($className);
     }// end_else
 }// end_loadClasses

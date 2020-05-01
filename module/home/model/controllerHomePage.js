@@ -8,7 +8,7 @@ function loadSlider() {
         }).done(function(data) {
             //////
             for (row in data) {
-                $('<div></div>').attr({'id': data[row].carPlate, "class": "single-slide", "style": "background-image: url(view/img/allCarsImg/" + data[row].image + ")"}).appendTo('.hero-slider')
+                $('<div></div>').attr({'id': data[row].carPlate, "class": "single-slide", "style": "background-image: url(http://192.168.0.182/frameworkCars.v.1.3/view/img/allCarsImg/" + data[row].image + ")"}).appendTo('.hero-slider')
                 .html('<div class= "slide-content text-center"><h2>' + data[row].brand + " " + data[row].model + " " + data[row].carPlate + '</h2></div>');
             }// end_for
             $(".hero-slider").addClass('owl-carousel');
@@ -45,7 +45,7 @@ function loadCatBrands(loadeds = 0) {
             for (row in data) {
                 let brand = data[row].brand.replace(/ /g, "_");
                 $('<div></div>').attr({'id': brand, 'class':'col-md-4 single-service-2'}).appendTo('#containerCategories');
-                $('<div></div>').attr({'class':'inner'}).html('<img src = "' + data[row].image + '" style = "max-width: 100%; height: 100px;"><h4 style = "padding-top: 25px">' + data[row].brand + '</h4></img>').appendTo('#' + brand);
+                $('<div></div>').attr({'class':'inner'}).html('<img src = "http://192.168.0.182/frameworkCars.v.1.3/' + data[row].image + '" style = "max-width: 100%; height: 100px;"><h4 style = "padding-top: 25px">' + data[row].brand + '</h4></img>').appendTo('#' + brand);
             }// end_for
             //////
         }).catch(function() {

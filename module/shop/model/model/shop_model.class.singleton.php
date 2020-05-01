@@ -4,7 +4,7 @@ class shop_model {
     private $bll;
     static $_instance;
     //////
-    private function __construct() {
+    function __construct() {
         $this -> bll = shop_bll::getInstance();
     }// end_construct
 

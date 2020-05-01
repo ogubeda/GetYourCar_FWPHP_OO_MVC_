@@ -4,7 +4,7 @@ class shop_bll {
     private $dao;
     static $_instance;
     //////
-    private function __construct() {
+    function __construct() {
         $this -> dao = shop_dao::getInstance();
     }// end_construct
 
@@ -20,9 +20,13 @@ class shop_bll {
     }// end_getInfo_shop
 
     public function getFilters_shop_BLL() {
-        $result = $this -> dao -> selectFilter();
-        if (!empty($result)) {
-            return json_encode($result);
+        $colsArr = array('brand', 'seats', 'doors', 'typeEngine', 'gearShift');
+        $returnArrBrands = array();
+        foreach ($colsArr as $row) {
+            $returnArrBrands[$row] = $this -> dao -> selectFilter($row);
+        }//end_foreach
+        if (!empty($returnArrBrands)) {
+            return json_encode($returnArrBrands);
         }// end_if
         return 'Empty.';
     }// end_getFilters_shop_BLL

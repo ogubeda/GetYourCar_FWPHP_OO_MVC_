@@ -4,7 +4,7 @@ class home_bll {
     private $dao;
     static $_instance;
 
-    private function __construct() {
+    function __construct() {
         $this -> dao = home_dao::getInstance();
     }// end_construct
 

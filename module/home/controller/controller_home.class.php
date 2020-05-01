@@ -6,19 +6,19 @@ class controller_home {
     }// end_construct
 
     function list() {
-        loadView(VIEW_PATH_INC . 'topPageHome.php', VIEW_PATH_HOME . 'homepage.html');
+        common::loadView(VIEW_PATH_INC . 'topPageHome.php', VIEW_PATH_HOME . 'homepage.html');
     }// end_list
 
     function homePageSlide() {
-        echo accessModel('home_model', 'getSlider_home') -> getResolve();
+        echo common::accessModel('home_model', 'getSlider_home') -> getResolve();
     }// end_homePageSlide
 
     function homePageCat() {
-        echo accessModel('home_model', 'getCategories_home',[$_POST['loaded'], $_POST['items']]) -> getResolve();
+        echo common::accessModel('home_model', 'getCategories_home',[$_POST['loaded'], $_POST['items']]) -> getResolve();
     }// end_homePageCat
 
     function incrementView() {
-        echo accessModel('home_model', 'IncView_home', $_POST['brand']);
+        echo common::accessModel('home_model', 'IncView_home', $_POST['brand']);
     }// end_incrementView
 
 }// end_controller_home

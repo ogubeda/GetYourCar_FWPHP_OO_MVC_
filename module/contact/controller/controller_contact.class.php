@@ -8,7 +8,7 @@ class controller_contact {
     }// end_construct
 
     function list() {
-        loadView(VIEW_PATH_INC . 'topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
+        common::loadView(VIEW_PATH_INC . 'topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
     }// end_list
 
     function sendEmail() {
@@ -21,10 +21,10 @@ class controller_contact {
                             'toEmail' => $_POST['email'], 
                             'inputMatter' => '', 
                             'inputMessage' => ''];
-        $emailAdmin = json_decode(setEmail($messageAdmin), true);
+        $emailAdmin = json_decode(mail::setEmail($messageAdmin), true);
         //////
         if (!empty($emailAdmin['id'])) {
-            $emailClient = json_decode(setEmail($messageClient), true);
+            $emailClient = json_decode(mail::setEmail($messageClient), true);
             if (!empty($emailClient['id'])) {
                 echo json_encode('Done!');
                 //////

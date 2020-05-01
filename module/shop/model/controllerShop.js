@@ -194,7 +194,7 @@ function showDetails() {
             $('<div></div>').attr({'class': 'top-details spt',}).appendTo('.content');
             $('<div><div>').attr({'class': 'top-photo'}).appendTo('.top-details');
             $('<div></div>').attr({'class': 'container separe-menu', 'id': 'container-shop-details'}).appendTo('.content');
-            $('.top-photo').css({'background': 'url(view/img/allCarsImg/' + data.image + ')', 'background-size': 'cover', 'background-position': 'center'});
+            $('.top-photo').css({'background': 'url(http://192.168.0.182/frameworkCars.v.1.3/view/img/allCarsImg/' + data.image + ')', 'background-size': 'cover', 'background-position': 'center'});
             //////
             $('<div></div>').attr({'class': 'container-brand'}).appendTo('#container-shop-details');
             $('<h3></h3>').html(data.brand + " " + data.model).appendTo('.container-brand');

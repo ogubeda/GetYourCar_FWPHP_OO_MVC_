@@ -4,7 +4,7 @@ class home_model {
     private $bll;
     static $_instance;
     //////
-    private function __construct() {
+    function __construct() {
         $this -> bll = home_bll::getInstance();
     }// end_construct
 

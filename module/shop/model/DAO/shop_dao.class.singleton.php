@@ -10,15 +10,8 @@ class shop_dao {
         return self::$_instance;
     }// end_getInstance
 
-    public function selectFilter() {
-        //////
-        $colsArr = array('brand', 'seats', 'doors', 'typeEngine', 'gearShift');
-        $returnArrBrands = array();
-        foreach ($colsArr as $row) {
-            $returnArrBrands[$row] = db::query() -> select([$row], 'allCars', true) -> order([$row]) -> execute() -> queryToArray(true) -> getResolve();
-        }//end_foreach
-        //////
-        return $returnArrBrands;
+    public function selectFilter($args) {
+        return db::query() -> select([$args], 'allCars', true) -> order([$args]) -> execute() -> queryToArray(true) -> getResolve();
     }// end_selectFilter
 
     public function selectShop($totalItems, $itemsPage) {
