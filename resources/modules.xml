@@ -9,6 +9,10 @@
         <uri>shop</uri>
     </module>
     <module>
+        <name>search</name>
+        <uri>search</uri>
+    </module>
+    <module>
         <name>contact</name>
         <uri>contact</uri>
     </module>

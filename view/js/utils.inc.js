@@ -1,3 +1,18 @@
+function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: sUrl,
+            type: sType,
+            dataType: sTData,
+            data: sData
+        }).done((data) => {
+            resolve(data);
+        }).fail((jqXHR, textStatus, errorThrow) => {
+            reject(jqXHR.responseText);
+        }); // end_ajax
+    });
+}// end_ajaxPromise
+
 function friendlyURL(url) {
     return new Promise(function(resolve, reject) {
         //////

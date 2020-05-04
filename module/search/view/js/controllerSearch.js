@@ -1,33 +1,37 @@
 function listDropProvinces() {
     //////
-    $.ajax({
-        url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=listProvinces',
-        type: 'POST',
-        dataType: 'JSON'
-    }).done(function(data) {
-        for (row in data) {
-            $('#drop-province').append('<option value = "' + data[row].province + '">' + data[row].province + '</option>');
-        }// end_for
-    }).fail(function() {
-    });// end_fail
+    friendlyURL('?page=search&op=listProvinces').then(function(url) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'JSON'
+        }).done(function(data) {
+            for (row in data) {
+                $('#drop-province').append('<option value = "' + data[row].province + '">' + data[row].province + '</option>');
+            }// end_for
+        }).fail(function() {
+        });// end_fail
+    });
 }// end_listDropBrands
 //////
 
 function listDropCon(data = undefined) {
     //////
-    $.ajax({
-        url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=listCon',
-        type: 'POST',
-        dataType: 'JSON',
-        data: data
-    }).done(function(data) {
-        $('#drop-con').empty();
-        $('#drop-con').append('<option value = "0">Select the Concessionaire</option>');
-        for (row in data) {
-            $('#drop-con').append('<option value = "' + data[row].idCon + '">' + data[row].nameCon + '</option>');
-        }// end_for
-    }).fail(function() {
-            console.log('F');
+    friendlyURL('?page=search&op=listCon').then(function(url) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'JSON',
+            data: data
+        }).done(function(data) {
+            $('#drop-con').empty();
+            $('#drop-con').append('<option value = "0">Select the Concessionaire</option>');
+            for (row in data) {
+                $('#drop-con').append('<option value = "' + data[row].idCon + '">' + data[row].nameCon + '</option>');
+            }// end_for
+        }).fail(function() {
+                console.log('F');
+        });
     });
 }// end_listDropCon
 //////
@@ -38,7 +42,7 @@ function launchDropCon() {
     //////
     $('#drop-province').on('change', function(){
         let prov = $(this).val();
-        if (prov === 0) {
+        if (prov == 0) {
             listDropCon();
         }else {
             listDropCon({province: prov});
@@ -58,31 +62,33 @@ function autoComplete() {
             sData.province = $('#drop-province').val();
         }// end_if
         //////
-        $.ajax({
-            url: 'http://192.168.0.182/frameworkCars.v.1.3/module/search/controller/controllerSearch.php?op=autoComplete',
-            type: 'POST',
-            data: sData,
-            dataType: 'JSON'
-        }).done(function(data) {
-            $('#searchAuto').empty();
-            $('#searchAuto').fadeIn(1000);
-            for (row in data) {
-                $('<div></div>').appendTo('#searchAuto').html(data[row].brand).attr({'class': 'searchElement', 'id': data[row].brand});
-            }// end_for
-            //////
-            $(document).on('click', '.searchElement', function() {
-                $('#autocom').val(this.getAttribute('id'));
-                $('#searchAuto').fadeOut(500);
-            });// end_click
-            $(document).on('click scroll', function(event) {
-                if (event.target.id !== 'autocom') {
+        friendlyURL('?page=search&op=autoComplete').then(function(url) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: sData,
+                dataType: 'JSON'
+            }).done(function(data) {
+                $('#searchAuto').empty();
+                $('#searchAuto').fadeIn(1000);
+                for (row in data) {
+                    $('<div></div>').appendTo('#searchAuto').html(data[row].brand).attr({'class': 'searchElement', 'id': data[row].brand});
+                }// end_for
+                //////
+                $(document).on('click', '.searchElement', function() {
+                    $('#autocom').val(this.getAttribute('id'));
                     $('#searchAuto').fadeOut(500);
-                }// end_if
-            });// end_click_scroll
-            //////
-        }).fail(function() {
-            $('#searchAuto').fadeOut(500);
-        });// end_fail
+                });// end_click
+                $(document).on('click scroll', function(event) {
+                    if (event.target.id !== 'autocom') {
+                        $('#searchAuto').fadeOut(500);
+                    }// end_if
+                });// end_click_scroll
+                //////
+            }).fail(function() {
+                $('#searchAuto').fadeOut(500);
+            });// end_fail
+        });
     });
 }// end_autoComplete
 //////
@@ -96,28 +102,32 @@ function btnSearch() {
         if (($('#drop-con').val() == 0) && (($('#drop-province').val() == 0))) {
             objVar = {'brand': [$('#autocom').val()]};
         }else if ($('#drop-province').val() != 0 && ($('#drop-con').val() == 0)) {
-            $.ajax({
-                url: 'module/search/controller/controllerSearch.php?op=listCon',
-                type: 'POST',
-                async: false,
-                dataType: 'JSON',
-                data: {province: $('#drop-province').val()}
-            }).done(function(data) {
-                for (row in data) {
-                    idCons.push(data[row].idCon);
-                }// ebd_for
-            }).fail(function() {
-                console.log('F');
-            });// end_ajax
-            //////
-            objVar = {'idCon': idCons, 'brand': [$('#autocom').val()]};
+            friendlyURL('?page=search&op=listCon').then(function(url) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    async: false,
+                    dataType: 'JSON',
+                    data: {province: $('#drop-province').val()}
+                }).done(function(data) {
+                    for (row in data) {
+                        idCons.push(data[row].idCon);
+                    }// ebd_for
+                }).fail(function() {
+                    console.log('F');
+                });// end_ajax
+                //////
+                objVar = {'idCon': idCons, 'brand': [$('#autocom').val()]};
+            });
         }else {
             objVar = {'idCon': [$('#drop-con').val()], 'brand': [$('#autocom').val()]};
         }// end_else
         //////
         localStorage.setItem('filters', JSON.stringify(objVar));
         //////
-        window.location.href = 'index.php?page=shop&op=list';
+        friendlyURL('?page=shop&op=list').then(function(url) {
+            window.location.href = url;
+        });
     });// end_search-btn
 }// end_btnSearch
 //////

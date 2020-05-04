@@ -26,7 +26,7 @@ class router {
         try {
             call_user_func(array($this -> loadModule(), $this -> loadFunction()));
         }catch(Exception $e) {
-            loadError();
+            common::loadError();
         }// end_catch
     }// end_routingStart
     
@@ -36,7 +36,6 @@ class router {
             foreach ($modules as $row) {
                 //////
                 if (in_array($this -> uriModule, (Array) $row -> uri)) {
-                    
                     $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php';
                     if (file_exists($path)) {
                         require_once($path);

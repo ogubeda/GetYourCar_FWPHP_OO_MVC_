@@ -6,33 +6,6 @@ include ($path . 'module/search/model/DAOSearch.php');
 $searchQuerys = new QuerysSearch();
 //////
 switch ($_GET['op']) {
-    case 'listProvinces';
-        $selProvinces = $searchQuerys -> multiple('SELECT DISTINCT province FROM concessionaire ORDER BY province');
-        //////
-        if (!empty($selProvinces -> getResolve())) {
-            echo json_encode($selProvinces -> getResolve());
-        }else {
-            echo $selProvinces -> getError();
-        }// end_else
-        break;
-        //////
-    case 'listCon';
-        $select = "";
-        //////
-        if ($_POST['province']) {
-            $select = 'SELECT * FROM concessionaire WHERE province="' . $_POST['province'] . '"ORDER BY nameCon';
-        }else {
-            $select = 'SELECT * FROM concessionaire';
-        }// end_else
-        $selCon = $searchQuerys -> multiple($select);
-        //////
-        if (!empty($selCon -> getResolve())) {
-            echo json_encode($selCon -> getResolve());
-        }else {
-            echo $selCon -> getError();
-        }// end_else
-        break;
-        //////
     case 'autoComplete';
         $select = 'SELECT DISTINCT brand FROM allCars';
         if (isset($_POST['dropCon'])) {

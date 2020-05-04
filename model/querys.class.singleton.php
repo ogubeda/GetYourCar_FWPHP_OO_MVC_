@@ -64,11 +64,11 @@ class querys {
         return $this;
     }// insert
 
-    public function where($values, $mode = 'AND', $operator = "=") {
+    public function where($values, $mode = 'AND', $operator = "=", $force = false) {
         $cont = 0;
         $typedQuery = " WHERE ";
         //////
-        if (!empty($this -> where)) {
+        if (!empty($this -> where) || $force) {
             $typedQuery = "";
             $cont = 1;
         }// end_if
