@@ -9,6 +9,8 @@ class common {
     }// end_loadError
     
     function loadView($topPage, $view) {
+        $topPage = VIEW_PATH_INC . $topPage;
+        //////
         if ((file_exists($topPage)) && (file_exists($view))) {
             require_once ($topPage);
             require_once (VIEW_PATH_INC . 'menu.html');
@@ -35,4 +37,11 @@ class common {
         //////
         throw new Exception();
     }// end_accessModel
+
+    function generate_Token_secure($longitud){
+        if ($longitud < 4) {
+            $longitud = 4;
+        }
+        return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2));
+    }
 }// end_common

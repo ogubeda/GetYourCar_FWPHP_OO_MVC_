@@ -8,7 +8,7 @@ class controller_contact {
     }// end_construct
 
     function list() {
-        common::loadView(VIEW_PATH_INC . 'topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
+        common::loadView('topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
     }// end_list
 
     function sendEmail() {

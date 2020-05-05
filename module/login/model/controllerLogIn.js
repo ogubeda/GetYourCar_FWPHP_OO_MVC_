@@ -36,23 +36,25 @@ function checkLogIn() {
 
 function requestLogIn(user) {
     //////
-    ajaxPromise('http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=logIn', 'POST', 'JSON', user)
-    .then(function(data) {
-        localStorage.setItem('secureSession', data);
-    }).then(function() {
-        restoreCart();
-    }).then(function() {
-        if (localStorage.getItem('purchase') === "true") {
-            localStorage.removeItem('purchase');
-            window.location.href = "index.php?page=cart&op=list";
-        }else {
-            window.location.href = "index.php?page=home&op=list";
-        }
-    }).catch(function(error) {
-        console.log(error);
-        $('#error').remove();
-        $('<span></span>').attr({'id': 'error', 'style': 'position: relative; float: right', 'class': 'error'}).html('Invalid username/password').appendTo('#top-form');
-    });// end_promise
+    friendlyURL('?page=login&op=logIn').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', user)
+        .then(function(data) {
+            localStorage.setItem('secureSession', data);
+        }).then(function() {
+            restoreCart();
+        }).then(function() {
+            if (localStorage.getItem('purchase') === "true") {
+                localStorage.removeItem('purchase');
+                window.location.href = "index.php?page=cart&op=list";
+            }else {
+                window.location.href = "index.php?page=home&op=list";
+            }
+        }).catch(function(error) {
+            console.log(error);
+            $('#error').remove();
+            $('<span></span>').attr({'id': 'error', 'style': 'position: relative; float: right', 'class': 'error'}).html('Invalid username/password').appendTo('#top-form');
+        });// end_promise
+    });
 }// end_requestLogIn
 
 function loadRegister() {
@@ -104,18 +106,20 @@ function checkRegister() {
         event.preventDefault();
         if (error == false) {
             user.password = CryptoJS.MD5(user.password).toString();
-            $.ajax({
-                url: 'http://192.168.0.182/frameworkCars.v.1.3/module/login/controller/controllerLogIn.php?op=register',
-                type: 'POST',
-                dataType: 'JSON',
-                data: user
-            }).done(function(data) {
-                successRegister();
-                console.log(data);
-            }).fail(function(error) {
-                console.log(error.responseText);
-                console.log('Fail when trying to register.');
-            });// end_fail
+            friendlyURL('?page=login&op=register').then(function(url) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: user
+                }).done(function(data) {
+                    successRegister();
+                    console.log(data);
+                }).fail(function(error) {
+                    console.log(error.responseText);
+                    console.log('Fail when trying to register.');
+                });// end_fail
+            });
             $('#error-duplicated').remove();
             $('<span></span>').attr({'id': 'error-duplicated', 'style': 'position: relative; float: right', 'class': 'error'}).html('Username or email in use.').appendTo('#input-username');
         }// end_if
@@ -187,7 +191,57 @@ function loadContent() {
         loadLogIn();
     }// end_else
 }// end_loadContent
+
+function handleAuthentication() {
+    webAuth.parseHash(function(err, authResult) {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+            window.location.hash = '';
+            setSession(authResult);
+        }else if (err) {
+            console.log(err);
+        }
+    });
+}// end_handleAuthentication
+
+function setSession(authResult) {
+    webAuth.client.userInfo(authResult.accessToken, function(err, profile) {
+        if (profile) {
+            friendlyURL('?page=login&op=socialLogIn').then(function(url) {
+                ajaxPromise(url, 'POST', 'JSON', {profile: profile})
+                .then(function(data) {
+                    friendlyURL('?page=home').then(function(url) {
+                        window.location.href = url;
+                        localStorage.setItem('secureSession', data);
+                    });
+                }).catch(function(error) {
+                    console.log(error);
+                });
+            });
+        }else {
+            console.log(err);
+        }// end_else
+    });
+}// end_setSession
+
+function addEventsLogin() {
+    $(document).on('click', '#social-btn', function() {
+        webAuth.authorize();
+    });
+}// end_addEventsLogin
+
+var webAuth = new auth0.WebAuth({
+    domain: authDomain,
+    clientID: clientIDAuth,
+    redirectUri: uriAuth,
+    audience: 'https://' + authDomain + '/userinfo',
+    responseType: 'token id_token',
+    scope: 'openid email profile',
+    leeway: 60
+  });
+
 $(document).ready(function() {
     //////
+    handleAuthentication();
     loadContent();
+    addEventsLogin();
 });// end_document.ready

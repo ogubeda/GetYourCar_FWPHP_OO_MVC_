@@ -4,7 +4,7 @@ session_start();
 
 class controller_shop {
     function list() {
-        common::loadView(VIEW_PATH_INC . 'topPageShop.php', VIEW_PATH_SHOP . 'list.html');
+        common::loadView('topPageShop.php', VIEW_PATH_SHOP . 'list.html');
     }// end_list
 
     function sendInfo() {

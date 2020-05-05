@@ -13,6 +13,10 @@
         <uri>logIn</uri>
     </function>
     <function>
+        <name>socialLogIn</name>
+        <uri>socialLogIn</uri>
+    </function>
+    <function>
         <name>logOut</name>
         <uri>logOut</uri>
     </function><function>

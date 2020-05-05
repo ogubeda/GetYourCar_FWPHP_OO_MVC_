@@ -1,12 +1,13 @@
 <?php
 //////
+session_start();
 class controller_home {
     function __construct() {
         $_SESSION['module'] = "home";
     }// end_construct
 
     function list() {
-        common::loadView(VIEW_PATH_INC . 'topPageHome.php', VIEW_PATH_HOME . 'homepage.html');
+        common::loadView('topPageHome.php', VIEW_PATH_HOME . 'homepage.html');
     }// end_list
 
     function homePageSlide() {

@@ -30,6 +30,7 @@ define ('MODEL_PATH_SEARCH', SITE_ROOT . '/module/search/model/model/');
 
 //Login
 define('VIEW_PATH_LOGIN', SITE_ROOT. 'module/login/view/');
+define ('MODEL_PATH_LOGIN', SITE_ROOT . '/module/login/model/model/');
 
 // Friendly
 define('URL_FRIENDLY', TRUE);

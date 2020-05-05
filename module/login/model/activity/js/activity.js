@@ -19,15 +19,17 @@ function timeCounter() {
 
 function reloadSession() {
     //////
-    $.ajax({
-        url: 'module/login/controller/controllerLogIn.php?op=reload',
-        type: 'POST',
-        dataType: 'JSON'
-    }).done(function(data) {
-        localStorage.setItem('secureSession', data);
-    }).fail(function(f) {
-        console.log(f.responseText);
-    })
+    friendlyURL('?page=login&op=reload').then(function(url) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'JSON'
+        }).done(function(data) {
+            localStorage.setItem('secureSession', data);
+        }).fail(function(f) {
+            console.log(f.responseText);
+        });
+    });
 }// end_reloadSession
 
 function checkActivity() {

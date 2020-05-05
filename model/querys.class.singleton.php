@@ -141,15 +141,19 @@ class querys {
     public function execute() {
         if (!empty($this -> join)) {
             $this -> query = $this -> query . $this -> join;
+            $this -> join = "";
         }
         if (!empty($this -> where)) {
             $this -> query = $this -> query . $this -> where;
+            $this -> where = "";
         }
         if (!empty($this -> order)) {
             $this -> query = $this -> query . $this -> order;
+            $this -> order = "";
         }
         if (!empty($this -> limit)) {
             $this -> query = $this -> query . $this -> limit;
+            $this -> limit = "";
         }
         $connection = db::enable();
         $this -> result = mysqli_query($connection, $this -> query);
@@ -182,7 +186,7 @@ class querys {
         }else if ($this -> getResult()) {
             $this -> resolve = json_encode($this -> result);
         }else {
-            $this -> resolve = 'Empty.';
+            $this -> resolve = $this -> error;
         }// end_else
         //////
         return $this;
