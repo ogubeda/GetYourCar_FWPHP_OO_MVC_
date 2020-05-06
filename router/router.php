@@ -54,7 +54,7 @@ class router {
         if (file_exists($path)) {
             $functions = simplexml_load_file($path);
             foreach ($functions as $row) {
-                if ($this -> uriFunction === (String) $row -> uri) {
+                if (in_array($this -> uriFunction, (Array) $row -> uri)) {
                     return (String) $row -> name;
                 }// end_if
             }// end_foreach

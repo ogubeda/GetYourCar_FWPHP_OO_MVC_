@@ -26,15 +26,18 @@ class querys {
         return $this;
     }// end_select
 
-    public function update($values, $table) {
+    public function update($values, $table, $quotes = false) {
         $typedQuery = "UPDATE $table SET ";
         $cont = 0;
         //////
         foreach ($values as $key => $row) {
+            if ($quotes) {
+                $row = "'" . $row . "'";
+            }
             if ($cont == 0) {
                 $typedQuery = $typedQuery . $key . " = " . $row;
             }else {
-                $typedQuery = $typedQuery . ", $key  = " . $row;
+                $typedQuery = $typedQuery . ", $key = " . $row;
             }// end_else
             $cont++;
         }// end_foreach
@@ -184,7 +187,7 @@ class querys {
         if (!empty($this -> getResolve())) {
             $this -> resolve = json_encode($this -> resolve);
         }else if ($this -> getResult()) {
-            $this -> resolve = json_encode($this -> result);
+            $this -> resolve = json_encode('Done');
         }else {
             $this -> resolve = $this -> error;
         }// end_else

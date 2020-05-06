@@ -3,6 +3,7 @@
     <function>
         <name>list</name>
         <uri>list</uri>
+        <uri>recover</uri>
     </function>
     <function>
         <name>register</name>
@@ -26,5 +27,17 @@
     <function>
         <name>reload</name>
         <uri>reload</uri>
+    </function>
+    <function>
+        <name>sendRecoverEmail</name>
+        <uri>sendRecoverEmail</uri>
+    </function>
+    <function>
+        <name>updatePassword</name>
+        <uri>updatePassword</uri>
+    </function>
+    <function>
+        <name>checkTokenRecover</name>
+        <uri>checkTokenRecover</uri>
     </function>
 </functions>

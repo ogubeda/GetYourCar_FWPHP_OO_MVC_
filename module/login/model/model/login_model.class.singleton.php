@@ -26,4 +26,16 @@ class login_model {
     public function accessUserSocial_login($args) {
         return $this -> bll -> accessUserSocial_login_BLL($args);
     }// end_accessUserSocial_login
+
+    public function verifyUser_login($args) {
+        return $this -> bll -> verifyUser_login_BLL($args);
+    }// end_verifyUser_login
+
+    public function checkRecoverToken_login($args) {
+        return $this -> bll -> checkRecoverToken_login_BLL($args);
+    }// end_checkRecoverToken_login
+
+    public function setUserNewPassword_login($args) {
+        return $this -> bll -> setUserNewPassword_login_BLL($args);
+    }// end_setUserNewPassword_login
 }// end_login_model

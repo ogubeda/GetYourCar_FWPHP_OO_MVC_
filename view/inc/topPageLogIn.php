@@ -13,6 +13,7 @@
     	<link rel="stylesheet" href="<?php echo SITE_PATH ?>view/assets/css/bootstrap.min.css">
     	<link rel="stylesheet" href="<?php echo SITE_PATH ?>view/assets/css/slicknav.css">
 		<link rel="stylesheet" href="<?php echo SITE_PATH ?>view/assets/css/main.css">
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 		<!-- JS Imports -->
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -28,6 +29,7 @@
 		<script type = "text/javascript" src="<?php echo SITE_PATH ?>view/js/utils.inc.js"></script>
 		<script src="https://cdn.auth0.com/js/auth0/9.2.2/auth0.min.js"></script>  
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js"></script>
+		<script type = "text/javascript" src = "//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 		<script type = "text/javascript" src = "<?php echo SITE_PATH ?>module/cart/view/js/controllerCart.js"></script>
 		<script type = "text/javascript" src="<?php echo SITE_PATH ?>view/js/menu.js"></script>      
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
@@ -35,6 +37,6 @@
 		<script type = "text/javascript" src = "<?php echo SITE_PATH ?>model/langCars.js"></script>
 		<script type = "text/javascript" src = "<?php echo SITE_PATH ?>view/js/effects.js"></script>
 		<script type = "text/javascript" src= "<?php echo SITE_PATH ?>module/search/view/js/controllerSearch.js"></script>
-        <script type = "text/javascript" src ="<?php echo SITE_PATH ?>module/login/model/controllerLogIn.js"></script>
+        <script type = "text/javascript" src ="<?php echo SITE_PATH ?>module/login/view/js/controllerLogIn.js"></script>
 	</head>
 <body>

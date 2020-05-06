@@ -1,10 +1,11 @@
 <?php
 //////
+session_start();
 $path = $_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/';
 include ($path . 'module/login/model/activity/processingSession.php');
-@session_start();
 //////
 class controller_login {
+    private $token;
     function list() {
         common::loadView('topPageLogIn.php', VIEW_PATH_LOGIN . 'logIn.html');
     }// end_list
@@ -39,4 +40,26 @@ class controller_login {
             echo 'Error';
         }// end_else
     }// end_logOut
+
+    function sendRecoverEmail() {
+        $result = common::accessModel('login_model', 'verifyUser_login', $_POST['username']);
+        $email = [];
+        if ($result != false) {
+            $email = ['type' => 'recover', 'token' => $result['token'], 'toEmail' => $result['email']];
+            $sendedEmail = json_decode(mail::setEmail($email), true);
+        }// end_if
+        if (!empty($sendedEmail['id'])) {
+            echo json_encode('Done!');
+            return;
+        }// end_if
+        echo 'Fail';
+    }// end_recoverPassword
+
+    function checkTokenRecover() {
+        echo common::accessModel('login_model', 'checkRecoverToken_login', $_POST['token']);
+    }// end_checkTokenRecover
+
+    function updatePassword() {
+        echo common::accessModel('login_model', 'setUserNewPassword_login', [$_POST['password'], $_SESSION['token']]);
+    }// end_updatePassword
 }// end_controller_login

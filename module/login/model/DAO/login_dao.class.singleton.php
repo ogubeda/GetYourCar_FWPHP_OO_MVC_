@@ -13,19 +13,31 @@ class login_dao {
     public function insertClientUser($idUser, $username, $email, $password, $avatar, $activeToken) {
         return db::query() -> insert([['id_user' => $idUser, 'username' => $username, 'email' => $email, 'password' 
                                                 => $password, 'registerDate' => date("Y/m/d"), 'avatar' => $avatar, 'type' 
-                                                => 'client', 'money' => 10000, 'token_active' => $activeToken, 'token_recover' => 'NULL']], 'users') 
+                                                => 'client', 'money' => 10000, 'token_active' => $activeToken, 'token_recover' => 'NULL', 'active' => 0]], 'users') 
                             -> execute() -> toJSON() -> getResolve();
     }// end_insertClientUser
 
     public function checkUserKeys($username, $email) {
-        return db::query() -> select(['username'], 'users') -> where(['username' => [$username], 'email' => [$email]], 'OR') -> execute() -> count();
+        return db::query() -> select(['id_user'], 'users') -> where(['username' => [$username], 'email' => [$email]], 'OR') -> execute() -> count();
     }// end_checkUserKeys
 
     public function selectUserData($username) {
-        return db::query() -> select(['*'], 'users') -> where(['username' => [$username]]) -> execute() -> queryToArray() -> getResolve();
+        return db::query() -> select(['*'], 'users') -> where(['id_user' => [$username]]) -> execute() -> queryToArray() -> getResolve();
     }// end_selectUserData
 
     public function checkUserSocial($idUser) {
-        return db::query() -> select(['id_user'], 'users') -> where(['id_user' => [$idUser]]) -> execute() -> count() -> getResolve();
+        return db::query() -> select(['email'], 'users') -> where(['id_user' => [$idUser]]) -> execute() -> queryToArray() -> getResolve();
     }// end_checkUserSocial
+
+    public function addEmailToken($idUser, $token) {
+        return db::query() -> update(['token_recover' => $token, 'active' => 0], 'users', true) -> where(['id_user' => [$idUser]]) -> execute() -> getResult();
+    }// end_addEmailToken
+
+    public function checkTokenEmail($token) {
+        return db::query() -> select(['token_recover'], 'users') -> where(['token_recover' => [$token]]) -> execute() -> count() -> getResolve();
+    }// end_checkTokenEmail
+
+    public function updateUserPassword($password, $token) {
+        return db::query() -> update(['token_recover' => "NULL", 'password' => $password], 'users', true) -> where(['token_recover' => [$token]]) -> execute() -> toJSON() -> getResolve();
+    }// end_updateUserPassword
 }// end_login_dao

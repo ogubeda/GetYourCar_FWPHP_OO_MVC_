@@ -22,10 +22,11 @@ function updateSession($force = false) {
     $_SESSION['old'] = $oldID;
 }// end_updateSession
 
-function loadSession($username, $type, $avatar) {
+function loadSession($id_user, $username, $type, $avatar) {
     //////
     updateSession(true);
     //////
+    $_SESSION['id_user'] = $id_user;
     $_SESSION['user'] = $username;
     $_SESSION['type'] = $type;
     $_SESSION['avatar'] = $avatar;

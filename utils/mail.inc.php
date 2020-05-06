@@ -16,9 +16,16 @@ class mail {
                 $email['toEmail'] = 'og.ubeda@gmail.com';
                 break;
                 //////
+            case 'recover';
+                $email['fromEmail'] = 'support@getyourcar.com';
+                $email['inputMatter'] = 'Recover Password.';
+                $content .= "<h2>Thanks for contacting us.</h2>";
+                $content .= "<a href = '" . common::friendlyURL('?page=login&op=recover&param=' . $email['token']) ."'>Click here for recover your password.</a>";
+                break;
+                //////
         }// end_switch
         //////
-        $content .= "<br><a href = 'http://192.168.0.182/frameworkCars.v.1.3/'>Get Your Car</a>";
+        $content .= "<br><a href = '" . common::friendlyURL('?page=home') . "'>Get Your Car</a>";
         $email['inputMessage'] .= $content;
         //////
         return self::sendMailGun($email);

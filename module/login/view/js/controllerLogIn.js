@@ -1,8 +1,9 @@
 function loadLogIn() {
     //////
     $('#register-btn').on('click', function() {
-        localStorage.setItem('currentPage', 'register')
-        location.reload();
+        friendlyURL('?page=register').then(function(url) {
+            window.location.href = url;
+        });
     });
     $('#login-btn').on('click', function() {
         checkLogIn();
@@ -73,10 +74,6 @@ function btnsRegister() {
     //////
     $(document).on('click', '.reg-check-btn', function() {
         checkRegister();
-    });
-    $(document).on('click', '.reg-back-btn', function() {
-        localStorage.setItem('currentPage', 'logIn')
-        location.reload();
     });
 }// end_btnsRegister
 
@@ -184,10 +181,13 @@ function loadContent() {
     //////
     $('.container-search').remove();
     //////
-    if (localStorage.getItem('currentPage') == 'register') {
+    let path = window.location.pathname.split('/');
+    if (path[2] === 'register') {
        loadRegister();
        btnsRegister();
-    }else{
+    }else if (path[3] === 'recover'){
+        setTimeout(function() {loadSetPassword(path[4])}, 100);
+    }else {
         loadLogIn();
     }// end_else
 }// end_loadContent
@@ -227,7 +227,99 @@ function addEventsLogin() {
     $(document).on('click', '#social-btn', function() {
         webAuth.authorize();
     });
+    //////
+    $(document).on('click', '#recover-btn', function() {
+        loadRecoverForm();
+    });
+    $(document).on('click', '.reg-back-btn', function() {
+        localStorage.setItem('currentPage', 'logIn')
+        friendlyURL('?page=login').then(function(url) {
+            window.location.href = url;
+        });
+    });
+    $(document).on('click', '#send-recover-btn', function() {
+        sendRecoverEmail();
+    });
+    $(document).on('click', '#update-pass-btn', function() {
+        setRecoverPassword();
+    });
 }// end_addEventsLogin
+
+function loadRecoverForm() {
+    $('.container-login').empty();
+    $('<form></form>').attr({'method': 'POST', 'name': 'recoverForm', 'id': 'recoverForm', 'class': 'separe-menu', 'autocomplete': 'off'}).html('<h2>Recover Password</h2>').appendTo('.container-login');
+    $('<div></div>').attr({'class': 'input', 'id': 'user-input-recover','autocomplete': 'off'}).html('<h6 id = "input-username">Username</h6><input type="text" name="username-recover" id="username-recover" placeholder = "Username"/>').appendTo('#recoverForm');
+    $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" id = "send-recover-btn" value = "Recover" style = "color: #0ca3e9"/>').appendTo('#recoverForm');
+    $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Back" class = "reg-back-btn" style = "color: #ff5722"/>').appendTo('#recoverForm');
+}// end_sendRecoverEmail
+
+function sendRecoverEmail() {
+    let user = {username : $('#username-recover').val()};
+    let result = regExData(user);
+    //////
+    $('#error-username').remove();
+    if (result.username == false) {
+        $('<span></span>').attr({'id': 'error-username', 'style': 'position: relative; float: right', 'class': 'error'}).html('Invalid value').appendTo('#user-input-recover');
+    }else {
+        friendlyURL('?page=login&op=sendRecoverEmail').then(function(url) {
+            ajaxPromise(url, 'POST', 'JSON', user)
+            .then(function() {
+                toastr.success('Email sended');
+                $('#recoverForm').trigger('reset');
+            }).catch(function() {
+                toastr.error('Something happend when trying to send.' ,'Error');
+                console.log(error);
+            });
+        });
+    }// end_else
+}// end_sendRecoverEmail
+
+function loadSetPassword(token) {
+    friendlyURL('?page=login&op=checkTokenRecover').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {token: token})
+        .then(function() {
+            loadSetPasswordContent();
+        }).catch(function(error) {
+            console.log(error);
+        });
+    });
+}// end_loadSetPassword
+
+function loadSetPasswordContent() {
+    $('.container-login').empty();
+    $('<form></form>').attr({'method': 'POST', 'name': 'set-passwordForm', 'id': 'set-passwordForm', 'class': 'separe-menu', 'autocomplete': 'off'}).html('<h2>Set your new password.</h2>').appendTo('.container-login');
+    $('<div></div>').attr({'class': 'input', 'id': 'new_password_cont','autocomplete': 'off'}).html('<h6 id = "input-new-password">Password</h6><input type="password" name="new-password" id="new_password" placeholder = "New Password"/>').appendTo('#set-passwordForm');
+    $('<div></div>').attr({'class': 'input', 'id': 'new_re_password_cont','autocomplete': 'off'}).html('<h6 id = "input-new-re-password">Re-type Password</h6><input type="password" name="new_re_password" id="new_re_password" placeholder = "New Password"/>').appendTo('#set-passwordForm');
+    $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" id = "update-pass-btn" value = "Update" style = "color: #0ca3e9"/>').appendTo('#set-passwordForm');
+    $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Back" class = "reg-back-btn" style = "color: #ff5722"/>').appendTo('#set-passwordForm');
+}// end_loadSetPasswordContent
+
+function setRecoverPassword() {
+    let user = {password: $('#new_password').val(), re_password: $('#new_re_password').val()};
+    let result = regExData(user);
+    let error = false;
+    //////
+    $('#error-password').remove()
+    for (row in result) {
+        if (result[row] === false) {
+            error = true;
+            break;    
+        }// end_if
+    }// end_for
+    if (error === false) {
+        friendlyURL('?page=login&op=updatePassword').then(function(url) {
+            user.password = CryptoJS.MD5(user.password).toString();
+            ajaxPromise(url, 'POST', 'JSON', user)
+            .then(function(data) {
+                console.log(data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        });
+    }else {
+        $('<span></span>').attr({'id': 'error-password', 'style': 'position: relative; float: right', 'class':'error'}).html("Invalid values").prependTo('#new_password_cont');
+    }
+}// end_setRecoverPassword
 
 var webAuth = new auth0.WebAuth({
     domain: authDomain,
