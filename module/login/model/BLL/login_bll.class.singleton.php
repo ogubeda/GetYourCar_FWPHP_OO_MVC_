@@ -20,8 +20,9 @@ class login_bll {
         $hashEmail = md5(strtolower(trim($args[1])));
         $selectedAvatar = "https://avatars.dicebear.com/v2/jdenticon/" . $hashEmail . ".svg";
         $pass = password_hash($args[2], PASSWORD_DEFAULT);
+        $token = common::generate_Token_secure(20);
         //////
-        return $this -> dao -> insertClientUser($args[0], $args[0], $args[1], $pass, $selectedAvatar, common::generate_Token_secure(20));
+        return array('query' => $this -> dao -> insertClientUser($args[0], $args[0], $args[1], $pass, $selectedAvatar, $token, 0), 'token' => $token);
     }// end_registerUserClient_BLL
 
     public function accessUser_login_BLL($args) {
@@ -36,7 +37,7 @@ class login_bll {
     public function accessUserSocial_login_BLL($args) {
         $result = true;
         if (empty($this -> dao -> checkUserSocial($args['sub']))) {
-            $result = $this -> dao -> insertClientUser($args['sub'], $args['nickname'], $args['email'],'NULL', $args['picture'], 'NULL');
+            $result = $this -> dao -> insertClientUser($args['sub'], $args['nickname'], $args['email'],'NULL', $args['picture'], 'NULL', 1);
         }// end_if
         if ($result) {
             $user = $this -> dao -> selectUserData($args['sub']);
@@ -67,4 +68,11 @@ class login_bll {
     public function setUserNewPassword_login_BLL($args) {
         return $this -> dao -> updateUserPassword(password_hash($args[0], PASSWORD_DEFAULT), $args[1]);
     }// end_setUserNewPassword_login_BLL
+
+    public function verifyUserEmail_login_BLL($args) {
+        if ($this -> dao -> verifyEmailToken($args) > 0) {
+            return $this -> dao -> updateVerifyToken($args);
+        }// end_if
+        return 'fail';
+    }// end_verifyUserEmail_login_BLL
 }// end_login_bll

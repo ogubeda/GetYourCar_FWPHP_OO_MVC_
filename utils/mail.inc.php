@@ -23,6 +23,13 @@ class mail {
                 $content .= "<a href = '" . common::friendlyURL('?page=login&op=recover&param=' . $email['token']) ."'>Click here for recover your password.</a>";
                 break;
                 //////
+            case 'validate';
+                $email['fromEmail'] = 'support@getyourcar.com';
+                $email['inputMatter'] = 'Email verification.';
+                $content .= '<h2>Email verification.</h2>';
+                $content .= '<a href = "' . common::friendlyURL('?page=login&op=verify&param=' . $email['token']) . '">Click here for verify your email.</a>';
+                break;
+                //////
         }// end_switch
         //////
         $content .= "<br><a href = '" . common::friendlyURL('?page=home') . "'>Get Your Car</a>";

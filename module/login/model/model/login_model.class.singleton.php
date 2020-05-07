@@ -38,4 +38,8 @@ class login_model {
     public function setUserNewPassword_login($args) {
         return $this -> bll -> setUserNewPassword_login_BLL($args);
     }// end_setUserNewPassword_login
+
+    public function verifyUserEmail_login($args) {
+        return $this -> bll -> verifyUserEmail_login_BLL($args);
+    }// end_verifyUserEmail_login
 }// end_login_model

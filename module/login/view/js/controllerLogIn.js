@@ -131,21 +131,7 @@ function successRegister() {
     $('<p></p>').html('Please select an option.').appendTo('#registerForm');
     $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Go to Log In" class = "go-login-btn" style = "color: #0ca3e9"/>').appendTo('#registerForm');
     $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Back to Home" class = "go-home-btn" style = "color: #ff5722"/>').appendTo('#registerForm');
-    //////
-    successRegisterBtns();
 }// end_successRegister
-
-function successRegisterBtns() {
-    //////
-    $(document).on('click', '.go-login-btn', function() {
-        localStorage.setItem('currentPage', 'logIn');
-        location.reload();
-    });//
-    //////
-    $(document).on('click', '.go-home-btn', function() {
-        window.location.href = "index.php?page=home&op=list";
-    });//
-}// end_succeddRegisterBtns
 
 function regExData(user) {
     //////
@@ -187,6 +173,8 @@ function loadContent() {
        btnsRegister();
     }else if (path[3] === 'recover'){
         setTimeout(function() {loadSetPassword(path[4])}, 100);
+    }else if (path[3] === 'verify') {
+        checkVerifyEmail(path[4]);
     }else {
         loadLogIn();
     }// end_else
@@ -243,6 +231,16 @@ function addEventsLogin() {
     $(document).on('click', '#update-pass-btn', function() {
         setRecoverPassword();
     });
+    $(document).on('click', '.go-login-btn', function() {
+        friendlyURL('?page=login').then(function(url) {
+            window.location.href = url;
+        });
+    });
+    $(document).on('click', '.go-home-btn', function() {
+        friendlyURL('?page=home').then(function(url) {
+            window.location.href = url;
+        });
+    });
 }// end_addEventsLogin
 
 function loadRecoverForm() {
@@ -281,6 +279,9 @@ function loadSetPassword(token) {
             loadSetPasswordContent();
         }).catch(function(error) {
             console.log(error);
+            friendlyURL('?page=error404').then(function(url) {
+                window.location.href = url;
+            });
         });
     });
 }// end_loadSetPassword
@@ -312,14 +313,39 @@ function setRecoverPassword() {
             ajaxPromise(url, 'POST', 'JSON', user)
             .then(function(data) {
                 console.log(data);
+                $('#set-passwordForm').empty();
+                $('<h2></h2>').html('Password updated successfully.').appendTo('#set-passwordForm');
+                $('<p></p>').html('Please select an option.').appendTo('#set-passwordForm');
+                $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Go to Log In" class = "go-login-btn" style = "color: #0ca3e9"/>').appendTo('#set-passwordForm');
+                $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Back to Home" class = "go-home-btn" style = "color: #ff5722"/>').appendTo('#set-passwordForm');
             }).catch(function(error) {
                 console.log(error);
+                toastr.error('Something happend when trying to update the password' ,'Error');
             });
         });
     }else {
         $('<span></span>').attr({'id': 'error-password', 'style': 'position: relative; float: right', 'class':'error'}).html("Invalid values").prependTo('#new_password_cont');
     }
 }// end_setRecoverPassword
+
+function checkVerifyEmail(token) {
+    friendlyURL('?page=login&op=validateEmail').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {token: token})
+        .then(function(data) {
+            console.log(data);
+            $('#logInForm').empty();
+            $('<h2></h2>').html('Your email has been verified.').appendTo('#logInForm');
+            $('<p></p>').html('Please select an option.').appendTo('#logInForm');
+            $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Go to Log In" class = "go-login-btn" style = "color: #0ca3e9"/>').appendTo('#logInForm');
+            $('<div></div>').attr({'class': 'input', 'autocomplete': 'off'}).html('<input type="button" value = "Back to Home" class = "go-home-btn" style = "color: #ff5722"/>').appendTo('#logInForm');
+        }).catch(function(error) {
+            console.log(error);
+            friendlyURL('?page=error404').then(function(url) {
+                window.location.href = url;
+            });
+        });
+    });
+}// end_checkVerifyEmail
 
 var webAuth = new auth0.WebAuth({
     domain: authDomain,

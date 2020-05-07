@@ -5,13 +5,23 @@ $path = $_SERVER['DOCUMENT_ROOT'] . '/frameworkCars.v.1.3/';
 include ($path . 'module/login/model/activity/processingSession.php');
 //////
 class controller_login {
-    private $token;
     function list() {
         common::loadView('topPageLogIn.php', VIEW_PATH_LOGIN . 'logIn.html');
     }// end_list
 
     function register() {
-        echo common::accessModel('login_model', 'registerUserClient_login', [$_POST['username'], $_POST['email'], $_POST['password']]);
+        $result = common::accessModel('login_model', 'registerUserClient_login', [$_POST['username'], $_POST['email'], $_POST['password']]);
+        $email = [];
+        //////
+        if ($result['query'] != false) {
+            $email = ['type' => 'validate', 'token' => $result['token'], 'toEmail' => $_POST['email']];
+            $sendedEmail = json_decode(mail::setEmail($email), true);
+        }// end_if
+        if (!empty($sendedEmail['id'])) {
+            echo json_encode('Done');
+            return;
+        }// end_if
+        echo 'fail';
     }// end_register
 
     function logIn() {
@@ -62,4 +72,8 @@ class controller_login {
     function updatePassword() {
         echo common::accessModel('login_model', 'setUserNewPassword_login', [$_POST['password'], $_SESSION['token']]);
     }// end_updatePassword
+
+    function validateEmail() {
+        echo common::accessModel('login_model', 'verifyUserEmail_login', $_POST['token']);
+    }// end_validateEmail
 }// end_controller_login

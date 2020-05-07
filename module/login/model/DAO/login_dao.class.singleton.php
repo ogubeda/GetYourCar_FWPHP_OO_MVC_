@@ -10,11 +10,11 @@ class login_dao {
         return self::$_instance;
     }// end_getInstance
 
-    public function insertClientUser($idUser, $username, $email, $password, $avatar, $activeToken) {
+    public function insertClientUser($idUser, $username, $email, $password, $avatar, $activeToken, $active) {
         return db::query() -> insert([['id_user' => $idUser, 'username' => $username, 'email' => $email, 'password' 
                                                 => $password, 'registerDate' => date("Y/m/d"), 'avatar' => $avatar, 'type' 
-                                                => 'client', 'money' => 10000, 'token_active' => $activeToken, 'token_recover' => 'NULL', 'active' => 0]], 'users') 
-                            -> execute() -> toJSON() -> getResolve();
+                                                => 'client', 'money' => 10000, 'token_active' => $activeToken, 'token_recover' => 'NULL', 'active' => $active]], 'users') 
+                            -> execute() -> getResult();
     }// end_insertClientUser
 
     public function checkUserKeys($username, $email) {
@@ -40,4 +40,12 @@ class login_dao {
     public function updateUserPassword($password, $token) {
         return db::query() -> update(['token_recover' => "NULL", 'password' => $password], 'users', true) -> where(['token_recover' => [$token]]) -> execute() -> toJSON() -> getResolve();
     }// end_updateUserPassword
+
+    public function verifyEmailToken($token) {
+        return db::query() -> select(['token_active'], 'users') -> where(['token_active' => [$token]]) -> execute() -> count() -> getResolve();
+    }// end_verifyEmailToken
+
+    public function updateVerifyToken($token) {
+        return db::query() -> update(['token_active' => 'NULL', 'active' => 1], 'users', true) -> where(['token_active' => [$token]]) -> execute() -> toJSON() -> getResolve();
+    }// end_updateVerifyToken
 }// end_login_dao

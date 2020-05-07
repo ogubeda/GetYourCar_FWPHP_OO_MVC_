@@ -24,5 +24,4 @@ class db {
         }
         return self::$_instance;
     }// end_query
-
 }// end_DB
