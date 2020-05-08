@@ -3,8 +3,8 @@ let timer = 0;
 
 function launchCounter() {
     //////
-    let interval = setInterval(timeCounter, 60000);
-    let launchSession = setInterval(reloadSession, 300000);
+    let interval = setInterval(function() {timeCounter()}, 60000);
+    let launchSession = setInterval(function() {reloadSession()}, 300000);
 }// end_launchCounter
 
 function timeCounter() {

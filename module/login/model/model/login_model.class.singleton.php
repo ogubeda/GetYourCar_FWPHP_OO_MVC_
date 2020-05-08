@@ -42,4 +42,8 @@ class login_model {
     public function verifyUserEmail_login($args) {
         return $this -> bll -> verifyUserEmail_login_BLL($args);
     }// end_verifyUserEmail_login
+
+    public function getUserData_login($args) {
+        return $this -> bll -> getUserData_login_BLL($args);
+    }// end_getUserData_login
 }// end_login_model

@@ -187,7 +187,7 @@ class querys {
         if (!empty($this -> getResolve())) {
             $this -> resolve = json_encode($this -> resolve);
         }else if ($this -> getResult()) {
-            $this -> resolve = json_encode('Done');
+            $this -> resolve = json_encode($this -> result);
         }else {
             $this -> resolve = $this -> error;
         }// end_else

@@ -52,13 +52,14 @@ class shop_bll {
     }// end_setViewUpCars_shop_BLL
 
     public function getUserFavs_shop_BLL($args) {
-        return $this -> dao -> selectFavs($args);
+        return $this -> dao -> selectFavs(json_decode(jwt_process::decode($args[0], $args[1]), true)['name']);
     }// end_getUserFavs_shop_BLL
 
     public function setUserFav_shop_BLL($args) {
-        if ($this -> dao -> checkCarFav($args[0], $args[1]) -> getResolve() > 0) {
-            return $this -> dao -> deleteFav($args[0], $args[1]);
+        $user = json_decode(jwt_process::decode($args[0], $args[1]), true)['name'];
+        if ($this -> dao -> checkCarFav($args[2], $user) -> getResolve() > 0) {
+            return $this -> dao -> deleteFav($args[2], $user);
         }// end_if
-        return $this -> dao -> insertFav($args[0], $args[1]);
+        return $this -> dao -> insertFav($args[2], $user);
     }//
 }// end_shop_bll

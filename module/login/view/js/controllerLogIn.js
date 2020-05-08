@@ -40,7 +40,8 @@ function requestLogIn(user) {
     friendlyURL('?page=login&op=logIn').then(function(url) {
         ajaxPromise(url, 'POST', 'JSON', user)
         .then(function(data) {
-            localStorage.setItem('secureSession', data);
+            localStorage.setItem('secureSession', data.secureSession);
+            localStorage.setItem('token', data.jwt);
         }).then(function() {
             restoreCart();
         }).then(function() {
@@ -198,8 +199,9 @@ function setSession(authResult) {
                 ajaxPromise(url, 'POST', 'JSON', {profile: profile})
                 .then(function(data) {
                     friendlyURL('?page=home').then(function(url) {
+                        localStorage.setItem('secureSession', data.secureSession);
+                        localStorage.setItem('token', data.jwt);
                         window.location.href = url;
-                        localStorage.setItem('secureSession', data);
                     });
                 }).catch(function(error) {
                     console.log(error);

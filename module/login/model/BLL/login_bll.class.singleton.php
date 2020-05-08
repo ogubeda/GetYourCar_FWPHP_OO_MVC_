@@ -17,7 +17,7 @@ class login_bll {
     }// end_getInstance
 
     public function registerUserClient_login_BLL($args) {
-        $hashEmail = md5(strtolower(trim($args[1])));
+        $hashEmail = md5(strtolower(trim($args[0])));
         $selectedAvatar = "https://avatars.dicebear.com/v2/jdenticon/" . $hashEmail . ".svg";
         $pass = password_hash($args[2], PASSWORD_DEFAULT);
         $token = common::generate_Token_secure(20);
@@ -28,8 +28,10 @@ class login_bll {
     public function accessUser_login_BLL($args) {
         $user = $this -> dao -> selectUserData($args[0]);
         if (password_verify($args[1], $user['password'])) {
-            loadSession($user['id_user'], $user['username'], $user['type'], $user['avatar']);
-            return json_encode(md5(session_id()));
+            $secure = common::generate_Token_secure(20);
+            $jwt = jwt_process::encode($secure, $user['id_user']);
+            loadSession($secure);
+            return json_encode(array('secureSession' => md5(session_id()), 'jwt' => $jwt));
         }// end_if
         return 'Fail';
     }// end_if
@@ -41,8 +43,10 @@ class login_bll {
         }// end_if
         if ($result) {
             $user = $this -> dao -> selectUserData($args['sub']);
-            loadSession($user['id_user'], $user['username'], $user['type'], $user['avatar']);
-            return json_encode(md5(session_id()));
+            $secure = common::generate_Token_secure(20);
+            loadSession($secure);
+            $jwt = jwt_process::encode($secure, $user['id_user']);
+            return json_encode(array('secureSession' => md5(session_id()), 'jwt' => $jwt));
         }// end_if
         return 'Empty';
     }// end_acessUserSocial_login_BLL
@@ -75,4 +79,14 @@ class login_bll {
         }// end_if
         return 'fail';
     }// end_verifyUserEmail_login_BLL
+
+    public function getUserData_login_BLL($args) {
+        $secure = common::generate_Token_secure(20);
+        $userName = json_decode(jwt_process::decode($args[0], $args[1]), true)['name'];
+        $user = $this -> dao -> selectUserMenuData($userName);
+        loadSession($secure);
+        $user['secureSession'] = md5(session_id());
+        $user['jwt'] = jwt_process::encode($secure, $userName);
+        return json_encode($user);
+    }// end_getUserData_login_BLL
 }// end_login_bll

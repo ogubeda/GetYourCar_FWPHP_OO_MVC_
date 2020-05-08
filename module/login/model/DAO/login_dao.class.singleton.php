@@ -48,4 +48,8 @@ class login_dao {
     public function updateVerifyToken($token) {
         return db::query() -> update(['token_active' => 'NULL', 'active' => 1], 'users', true) -> where(['token_active' => [$token]]) -> execute() -> toJSON() -> getResolve();
     }// end_updateVerifyToken
+
+    public function selectUserMenuData($idUser) {
+        return db::query() -> select(['username', 'avatar', 'type'], 'users') -> where(['id_user' => [$idUser]]) -> execute() -> queryToArray() -> getResolve();
+    }// end_selectUserMenuData
 }// end_login_dao

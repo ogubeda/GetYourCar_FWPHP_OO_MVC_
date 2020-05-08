@@ -20,6 +20,9 @@ function loadClasses($className) {
     }else if (file_exists(SITE_ROOT . 'model/' . $className . '.class.singleton.php')){
         set_include_path(SITE_ROOT . 'model/');
         spl_autoload($className);
+    }else if (file_exists(SITE_ROOT . 'model/' . $className . '.class.php')){
+        set_include_path(SITE_ROOT . 'model/');
+        spl_autoload($className);
     }else if (file_exists(SITE_ROOT . 'utils/' . $className . '.inc.php')) {
         set_include_path(SITE_ROOT . 'utils/');
         spl_autoload($className);

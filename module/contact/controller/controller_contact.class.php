@@ -1,12 +1,6 @@
 <?php
 //////
-session_start();
-//////
 class controller_contact {
-    function __construct() {
-        $_SESSION['module'] = "contact";
-    }// end_construct
-
     function list() {
         common::loadView('topPageContact.php', VIEW_PATH_CONTACT . 'contactus.html');
     }// end_list

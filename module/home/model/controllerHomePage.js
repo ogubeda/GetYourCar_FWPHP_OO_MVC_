@@ -164,7 +164,6 @@ function redirectShop() {
                 type: 'POST',
                 data: {brand: brand}
             }).done(function(data) {
-                console.log(data);
                 if (data == 1) {
                     var filter = {'brand': [brand]};
                     localStorage.setItem('filters', JSON.stringify(filter));
@@ -180,7 +179,9 @@ function redirectShop() {
     $(document).on('click', '.single-slide', function() {
         localStorage.setItem('carPlate', this.getAttribute('id'));
         localStorage.setItem('currentPage', 'shop-details');
-        window.location.href = "index.php?page=shop&op=list"
+        friendlyURL('?page=shop').then(function(url) {
+            window.location.href = url;
+        });
     });
 }// end_redirectShop
 

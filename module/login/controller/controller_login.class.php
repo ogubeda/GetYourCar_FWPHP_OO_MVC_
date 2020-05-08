@@ -15,9 +15,7 @@ class controller_login {
         //////
         if ($result['query'] != false) {
             $email = ['type' => 'validate', 'token' => $result['token'], 'toEmail' => $_POST['email']];
-            $sendedEmail = json_decode(mail::setEmail($email), true);
-        }// end_if
-        if (!empty($sendedEmail['id'])) {
+            mail::setEmail($email);
             echo json_encode('Done');
             return;
         }// end_if
@@ -33,7 +31,7 @@ class controller_login {
     }// end_socialLogIn
 
     function returnSession() {
-        echo returnUserSession();
+        echo common::accessModel('login_model', 'getUserData_login', [$_POST['jwt'], $_SESSION['JWT_Secret'], $_POST['secureSession']]);
     }// end_returnSession
 
     function reload() {

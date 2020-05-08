@@ -6,10 +6,10 @@ function loadMenu() {
         $('<li></li>').html('<a href="' + values[2] +'" class = "menu-btn" id = "contact" data-tr="Contact Us">Contact Us</a>').appendTo('#fixed-menu');
         //////
         friendlyURL('?page=login&op=returnSession').then(function(url) {
-            ajaxPromise(url, 'POST', 'JSON', {secureSession: localStorage.getItem('secureSession')})
+            ajaxPromise(url, 'POST', 'JSON', {secureSession: localStorage.getItem('secureSession'), jwt: localStorage.getItem('token')})
             .then(function(data) {
                 $('<li></li>').html('<a class = "menu-btn" id = "profile-btn" style = "background : url(' + data.avatar + ') no-repeat; padding-left: 30px; margin-left: 15px">' + 
-                                    '<span style= "float: left;">' + data.user + '</span></a>').attr({'class': 'item-sideNav', 'id': 'profile-submenu'}).appendTo('#fixed-menu');
+                                    '<span style= "float: left;">' + data.username + '</span></a>').attr({'class': 'item-sideNav', 'id': 'profile-submenu'}).appendTo('#fixed-menu');
                 //////
                 $('<ul></ul>').attr({'class': 'sub-menu'}).html('<li><a href = "index.php?page=profile&op=list" id = "profile">Profile</a></li>' + 
                                                                 '<li><a id = "log-out-btn">Log Out</a></li>').appendTo('#profile-submenu');
@@ -23,7 +23,9 @@ function loadMenu() {
                 addActivity();
                 logOutClick();
                 localStorage.setItem('secureSession', data.secureSession);
-            }).catch(function() {
+                localStorage.setItem('token', data.jwt);
+            }).catch(function(error) {
+                console.log(error);
                 $('<li></li>').html('<a href = ' + values[3] + ' class = "menu-btn" id = "logIn">Log In</a>').appendTo('#fixed-menu');
             }).then(function() {
                 fixedMenu();
@@ -54,14 +56,16 @@ function clientMenu() {
 
 function fixedMenu(bagBtn1 = bagBtn) {
     //////
-    $('<li></li>').html('<a href = "index.php?page=cart&op=list" class = "menu-btn" id = "cart">' + bagBtn1 + '</a>').appendTo('#fixed-menu');
-    $('<li></li>').html('<a class = "menu-btn" id = "more-options">More Options</a>').appendTo('#fixed-menu');
-    $('<li></li>').html('<a id = "close-options-sideNav">Close</a>').prependTo('#navbar-menu-side').attr({'style': 'display: block'});
-    //////
-    $('<li></li>').html('<a href="#">Languages</a>').appendTo('#navbar-menu-side').attr({'class': ' has-child item-sideNav', 'id': 'lang-submenu'});
-    $('<ul></ul>').attr({'class': 'sub-menu'}).html('<li><a id = "btn-en">English</a></li>' + 
-                                                    '<li><a id = "btn-es">Spanish</a></li>' +
-                                                    '<li><a id = "btn-val">Valencian</a></li>').appendTo('#lang-submenu');
+    friendlyURL('?page=cart').then(function(url) {
+        $('<li></li>').html('<a href = "' + url + '" class = "menu-btn" id = "cart">' + bagBtn1 + '</a>').appendTo('#fixed-menu');
+        $('<li></li>').html('<a class = "menu-btn" id = "more-options">More Options</a>').appendTo('#fixed-menu');
+        $('<li></li>').html('<a id = "close-options-sideNav">Close</a>').prependTo('#navbar-menu-side').attr({'style': 'display: block'});
+        //////
+        $('<li></li>').html('<a href="#">Languages</a>').appendTo('#navbar-menu-side').attr({'class': ' has-child item-sideNav', 'id': 'lang-submenu'});
+        $('<ul></ul>').attr({'class': 'sub-menu'}).html('<li><a id = "btn-en">English</a></li>' + 
+                                                        '<li><a id = "btn-es">Spanish</a></li>' +
+                                                        '<li><a id = "btn-val">Valencian</a></li>').appendTo('#lang-submenu');
+    });
 }// end_fixedMenu
 //////
 
@@ -82,6 +86,7 @@ function logOut() {
         }).done(function() {
             console.log('Session closed.');
             localStorage.removeItem('secureSession');
+            localStorage.removeItem('token');
             window.location.href = "index.php?page=home&op=list";
         }).fail(function() {
             console.log('Something has occured');
@@ -91,7 +96,7 @@ function logOut() {
 
 function addActivity() {
     var script = document.createElement('script');
-    script.src = "module/login/model/activity/js/activity.js";
+    script.src = "http://" + window.location.hostname + "/frameworkCars.v.1.3/module/login/model/activity/js/activity.js";
     $('head').append(script);
 }// end_addActivity
 

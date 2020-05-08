@@ -2,10 +2,6 @@
 //////
 session_start();
 class controller_home {
-    function __construct() {
-        $_SESSION['module'] = "home";
-    }// end_construct
-
     function list() {
         common::loadView('topPageHome.php', VIEW_PATH_HOME . 'homepage.html');
     }// end_list

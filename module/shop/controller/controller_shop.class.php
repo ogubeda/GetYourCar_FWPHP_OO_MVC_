@@ -36,12 +36,13 @@ class controller_shop {
     }// end_viewUp
 
     function sendFavs() {
-        echo common::accessModel('shop_model', 'getUserFavs_shop', $_SESSION['user']) -> getResolve();
+        echo common::accessModel('shop_model', 'getUserFavs_shop', [$_POST['jwt'], $_SESSION['JWT_Secret']]);
     }// end_sendFavs
 
     function updateFavs() {
-        if (isset($_SESSION['user'])) {
-            echo common::accessModel('shop_model', 'setUserFav_shop', [$_POST['carPlate'], $_SESSION['username']]);
+        if (!empty($_POST['jwt'])) {
+            echo common::accessModel('shop_model', 'setUserFav_shop', [$_POST['jwt'], $_SESSION['JWT_Secret'], $_POST['carPlate']]);
+            return;
         }// end_if
         echo 'no-login';
     }// end_updateFavs
