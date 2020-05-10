@@ -12,34 +12,38 @@ function addToCart() {
 
 function paintCart() {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=selectCart', 'POST', 'JSON')
-    .then(function(data) {
-        if (data === 'false') {
-            if (localStorage.getItem('cart')) {
-                data = JSON.parse(localStorage.getItem('cart'));
-            }else {
-                return;
-            }// end_else
-        }// end_if
-        for (row in data) {
-            $('#' + data[row].carPlate).find('#cart-btn').addClass('active-cart-btn');
-        }// end_for
-    }).catch(function(error) {
-        console.log(error);
+    friendlyURL('?page=cart&op=selectCart').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {JWT: localStorage.getItem('token')})
+        .then(function(data) {
+            if (data === 'false') {
+                if (localStorage.getItem('cart')) {
+                    data = JSON.parse(localStorage.getItem('cart'));
+                }else {
+                    return;
+                }// end_else
+            }// end_if
+            for (row in data) {
+                $('#' + data[row].carPlate).find('#cart-btn').addClass('active-cart-btn');
+            }// end_for
+        }).catch(function(error) {
+            console.log(error);
+        });
     });
 }// end_paintCart   
 
 function cartSys(carPlate) {
     //////
-    storeCart(carPlate, 1)
-    .then(function() {
-        console.log('Saved.');
-    }).catch(function(error) {
-        if (error === 'no-login') {
-            insertCart(carPlate);
-        }else {
-            console.log(error);
-        }// end_else
+    friendlyURL('?page=cart&op=storeCart').then(function(url) {
+        storeCart(url, carPlate, 1)
+        .then(function() {
+            console.log('Saved.');
+        }).catch(function(error) {
+            if (error === 'no-login') {
+                insertCart(carPlate);
+            }else {
+                console.log(error);
+            }// end_else
+        });
     });
 }// end_cartSys
 //////
@@ -58,9 +62,9 @@ function insertCart(carPlate) {
     //////
 }// end_insertCart
 
-function removeDBCart(carPlate) {
+function removeDBCart(url, carPlate) {
     //////
-    return ajaxPromise('module/cart/controller/controllerCart.php?op=removeCart', 'POST', 'JSON', {carPlate: carPlate});
+    return ajaxPromise(url, 'POST', 'JSON', {carPlate: carPlate, JWT: localStorage.getItem('token')});
 }// end_removeDBCart
 //////
 
@@ -91,14 +95,14 @@ function deleteCart() {
 }// end_deleteCart
 //////
 
-function getCart() {
-    return ajaxPromise('module/cart/controller/controllerCart.php?op=getCart', 'POST', 'JSON', {cart: JSON.parse(localStorage.getItem('cart'))});
+function getCart(url) {
+    return ajaxPromise(url, 'POST', 'JSON', {cart: JSON.parse(localStorage.getItem('cart'))});
 }// end_getCart
 //////
 
-function storeCart(carPlate, days) {
+function storeCart(url, carPlate, days) {
     //////
-    return ajaxPromise('module/cart/controller/controllerCart.php?op=storeCart', 'POST', 'JSON', {carPlate: carPlate, days: days});
+    return ajaxPromise(url, 'POST', 'JSON', {carPlate: carPlate, days: days, JWT: localStorage.getItem('token')});
 }// end_storeCart
 //////
 
@@ -107,10 +111,12 @@ function restoreCart() {
     let values = JSON.parse(localStorage.getItem('cart')) || [];
     //////
     for (row in values) {
-        storeCart(values[row].carPlate, values[row].days).then(function() {
-            console.log('Stored.');
-        }).catch(function(error) {
-            console.log(error);
+        friendlyURL('?page=cart&op=storeCart').then(function(url) {
+            storeCart(url, values[row].carPlate, values[row].days).then(function() {
+                console.log('Stored.');
+            }).catch(function(error) {
+                console.log(error);
+            });
         });
     }// end_for
     deleteCart();

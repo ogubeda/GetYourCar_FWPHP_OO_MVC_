@@ -22,6 +22,7 @@ class db {
         if (!(self::$_instance instanceof querys)) {
             self::$_instance = new querys();
         }
+        self::$_instance -> setQuery("");
         return self::$_instance;
     }// end_query
 }// end_DB

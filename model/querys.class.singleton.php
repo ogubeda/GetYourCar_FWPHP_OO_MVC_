@@ -10,6 +10,7 @@ class querys {
     private $join;
     private $order;
     private $limit;
+    private $transactions;
 
     public function select($values, $table, $distinct = false) {
         $select = "SELECT ";
@@ -211,4 +212,7 @@ class querys {
         return $this -> result;
     }// end_getResult
 
+    public function setQuery($query) {
+        $this -> query = $query;
+    }// end_setQuery
 }// end_Querys

@@ -29,11 +29,12 @@ define ('MODEL_PATH_SHOP', SITE_ROOT . 'module/shop/model/model/');
 define ('MODEL_PATH_SEARCH', SITE_ROOT . '/module/search/model/model/');
 
 //Login
-define('VIEW_PATH_LOGIN', SITE_ROOT. 'module/login/view/');
+define('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/view/');
 define ('MODEL_PATH_LOGIN', SITE_ROOT . '/module/login/model/model/');
 
 //Cart
-define('VIEW_PATH_CART', SITE_ROOT. 'module/cart/view/');
+define('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
+define ('MODEL_PATH_CART', SITE_ROOT . '/module/cart/model/model/');
 
 // Friendly
 define('URL_FRIENDLY', TRUE);

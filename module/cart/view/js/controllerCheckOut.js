@@ -13,17 +13,19 @@ function addCartEvents() {
     });
     $(document).on('click', '#delete-btn', function() {
         const thisBtn = $(this);
-        removeDBCart(thisBtn.closest('.product-element').attr('id'))
-        .then(function(data) {
-            if (data === false) {
-                if (localStorage.getItem('cart')) {
-                    removeCart(thisBtn.closest('.product-element').attr('id'));
+        friendlyURL('?page=cart&op=removeCart').then(function(url) {
+            removeDBCart(url, thisBtn.closest('.product-element').attr('id'))
+            .then(function(data) {
+                if (data === false) {
+                    if (localStorage.getItem('cart')) {
+                        removeCart(thisBtn.closest('.product-element').attr('id'));
+                    }// end_if
                 }// end_if
-            }// end_if
-            getDataCart();
-        }).catch(function(error) {
-            console.log(error);
-        });//
+                getDataCart();
+            }).catch(function(error) {
+                console.log(error);
+            });//
+        });
     });//
     //////
     $(document).on('click', '#code-disc-btn', function() {
@@ -42,93 +44,105 @@ function addCartEvents() {
 
 function removeDiscCode() {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=removeDiscCode', 'POST', 'JSON')
-    .then(function(data) {
-        console.log(data);
-        getDataCart();
-    }).catch(function(error){
-        console.log(error);
+    friendlyURL('?page=cart&op=removeDiscCode').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {JWT: localStorage.getItem('token')})
+        .then(function(data) {
+            console.log(data);
+            getDataCart();
+        }).catch(function(error){
+            console.log(error);
+        });
     });
 }// end_removeDiscCode
 //////
 
 function addDiscCode(discCode) {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=addDiscCode', 'POST', 'JSON', {code: discCode})
-    .then(function() {
-        getDataCart();
-    }).catch(function(error) {
-        console.log(error);
-        if (error === 'no-login') {
-            localStorage.setItem('purchase', true);
-            window.location.href = 'index.php?page=log-in&op=list';
-        }// end_if
+    friendlyURL('?page=cart&op=addDiscCode').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {code: discCode, JWT: localStorage.getItem('token')})
+        .then(function() {
+            getDataCart();
+        }).catch(function(error) {
+            console.log(error);
+            if (error === 'no-login') {
+                localStorage.setItem('purchase', true);
+                window.location.href = 'index.php?page=log-in&op=list';
+            }// end_if
+        });
     });
 }// end_addDiscCode
 //////
 
 function checkOutCart() {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=checkOut', 'POST', 'JSON')
-    .then(function(data) {
-        console.log(data);
-        if (data === "false") {
-            localStorage.setItem('purchase', true);
-            window.location.href = 'index.php?page=log-in&op=list';
-        }else {
-            $('#container-details-cart').empty();
-            $('#price-cart-calc').empty();
-            $('#header-price-cart').empty();
-            $('#checkout-btn').remove();
-            //////
-            $('<h1></h1>').html('Succesfull purchase').appendTo('#container-details-cart');
-        }// end_else
-    }).catch(function(error){
-        console.log(error);
+    friendlyURL('?page=cart&op=checkOut').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {JWT: localStorage.getItem('token')})
+        .then(function(data) {
+            console.log(data);
+            if (data === "false") {
+                localStorage.setItem('purchase', true);
+                window.location.href = 'index.php?page=log-in&op=list';
+            }else {
+                $('#container-details-cart').empty();
+                $('#price-cart-calc').empty();
+                $('#header-price-cart').empty();
+                $('#checkout-btn').remove();
+                //////
+                $('<h1></h1>').html('Succesfull purchase').appendTo('#container-details-cart');
+            }// end_else
+        }).catch(function(error){
+            console.log(error);
+        });
     });
 }// end_checkOutCart
 
 function updateDays(days, carPlate) {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=updateDays', 'POST', 'JSON', {days: days, carPlate: carPlate})
-    .then(function() {
-        getDataCart();
-    }).catch(function(error) {
-       if (localStorage.getItem('cart')) {
-           updateDaysLocal(carPlate, days);
-           getDataCart();
-       }else {
-           console.log(error);
-       }
-    })
+    friendlyURL('?page=cart&op=updateDays').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {days: days, carPlate: carPlate, JWT: localStorage.getItem('token')})
+        .then(function() {
+            getDataCart();
+        }).catch(function(error) {
+           if (localStorage.getItem('cart')) {
+               updateDaysLocal(carPlate, days);
+               getDataCart();
+           }else {
+               console.log(error);
+           }// end_else
+        });
+    });
 }// end_updateDays
 //////
 
 function getDataCart() {
     //////
-    ajaxPromise('module/cart/controller/controllerCart.php?op=loadDataCart', 'POST', 'JSON')
-    .then(function(data) {
-        printDataCart(data);
-    }).catch(function(error) {
-        if (!localStorage.getItem('cart')) {
-            $('#container-details-cart').empty();
-            $('#price-cart-calc').empty();
-            $('#checkout-btn').remove();
-            $('<h3></h3>').attr({'id': 'error-cart-load'}).html('It seems your cart is empty :(').appendTo('#container-details-cart');
-        }else {
-            getCart()
-            .then(function(data) {
-                console.log(data);
-                printDataCart(data, JSON.parse(localStorage.getItem('cart')));
-            }).catch(function(error) {
-                console.log(error);
+    friendlyURL('?page=cart&op=loadDataCart').then(function(url) {
+        ajaxPromise(url, 'POST', 'JSON', {JWT: localStorage.getItem('token')})
+        .then(function(data) {
+            printDataCart(data);
+        }).catch(function(error) {
+            console.log(error);
+            if (!localStorage.getItem('cart')) {
                 $('#container-details-cart').empty();
                 $('#price-cart-calc').empty();
-                $('#container-price-cart').empty();
+                $('#checkout-btn').remove();
                 $('<h3></h3>').attr({'id': 'error-cart-load'}).html('It seems your cart is empty :(').appendTo('#container-details-cart');
-            });
-        }// end_else
-        console.log(error);
+            }else {
+                friendlyURL('?page=cart&op=getCart').then(function(url) {
+                    getCart(url)
+                    .then(function(data) {
+                        console.log(data);
+                        printDataCart(data, JSON.parse(localStorage.getItem('cart')));
+                    }).catch(function(error) {
+                        console.log(error);
+                        $('#container-details-cart').empty();
+                        $('#price-cart-calc').empty();
+                        $('#container-price-cart').empty();
+                        $('<h3></h3>').attr({'id': 'error-cart-load'}).html('It seems your cart is empty :(').appendTo('#container-details-cart');
+                    });
+                });
+            }// end_else
+        });
     });
 }// end_getDataCart
 //////
@@ -155,7 +169,7 @@ function printDataCart(cart, localCart = null) {
         $('<div></div>').attr({'id': cart[row].carPlate, 'class': 'product-element', 'style': 'margin-top: 25px; width: 75%'}).appendTo('#container-details-cart');
         $('<span></span>').attr({'id': 'info-cont'}).html(cart[row].brand + ' ' + cart[row].model).appendTo('#' + cart[row].carPlate);
         $('<span></span>').attr({'id': 'select-days' + cart[row].carPlate}).html('Days ').appendTo('#' + cart[row].carPlate);
-        $('<select></select>').attr({'class': 'select-drop-days', 'name': 'quantity-days', 'autocomplete': 'off', 'id': 'select-daysI-' + cart[row].carPlate}).appendTo('#select-days' + cart[row].carPlate);
+        $('<select></select>').attr({'class': 'select-drop-days', 'name': 'quantity-days', 'autocomplete': 'off', 'id': 'select-daysI-' + cart[row].carPlate, 'style': 'width: 60%'}).appendTo('#select-days' + cart[row].carPlate);
         for (let i = 0; i < 10; i++) {
             $('<option></option>').attr({'value': i + 1, 'selected':function() {
                 if ((i + 1 ) === days) {
