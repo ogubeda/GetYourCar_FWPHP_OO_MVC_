@@ -87,7 +87,18 @@ function logOut() {
             console.log('Session closed.');
             localStorage.removeItem('secureSession');
             localStorage.removeItem('token');
-            window.location.href = "index.php?page=home&op=list";
+            var webAuth = new auth0.WebAuth({
+                domain: authDomain,
+                clientID: clientIDAuth,
+                redirectUri: uriAuth,
+                audience: 'https://' + authDomain + '/userinfo',
+                responseType: 'token id_token',
+                scope: 'openid email profile',
+                leeway: 60
+              });
+            webAuth.logout({
+                returnTo: 'http://192.168.0.182/frameworkCars.v.1.3/home'
+            });
         }).fail(function() {
             console.log('Something has occured');
         });// end_ajax

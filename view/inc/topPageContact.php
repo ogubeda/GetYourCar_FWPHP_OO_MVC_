@@ -27,6 +27,7 @@
 		<!-- Mis Imports -->
 		<script type = "text/javascript" src = "<?php echo SITE_PATH ?>model/api-keys/apis.js"></script>
 		<script type = "text/javascript" src = "<?php echo SITE_PATH ?>module/cart/view/js/controllerCart.js"></script>
+		<script src="https://cdn.auth0.com/js/auth0/9.2.2/auth0.min.js"></script>  
 		<script type = "text/javascript" src="<?php echo SITE_PATH ?>view/js/utils.inc.js"></script>  
 		<script type = "text/javascript" src="<?php echo SITE_PATH ?>view/js/menu.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>

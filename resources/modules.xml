@@ -37,4 +37,8 @@
         <name>user-order</name>
         <uri>user-order</uri>
     </module>
+    <module>
+        <name>profile</name>
+        <uri>profile</uri>
+    </module>
 </modules>

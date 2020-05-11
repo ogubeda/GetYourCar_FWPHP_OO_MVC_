@@ -36,6 +36,10 @@ define ('MODEL_PATH_LOGIN', SITE_ROOT . '/module/login/model/model/');
 define('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
 define ('MODEL_PATH_CART', SITE_ROOT . '/module/cart/model/model/');
 
+//Profile
+define('VIEW_PATH_PROFILE', SITE_ROOT . 'module/profile/view/');
+define ('MODEL_PATH_PROFILE', SITE_ROOT . '/module/profile/model/model/');
+
 // Friendly
 define('URL_FRIENDLY', TRUE);
 
