@@ -23,9 +23,11 @@ function reloadSession() {
         $.ajax({
             url: url,
             type: 'POST',
-            dataType: 'JSON'
+            dataType: 'JSON',
+            data: {JWT: localStorage.getItem('token')}
         }).done(function(data) {
-            localStorage.setItem('secureSession', data);
+            localStorage.setItem('secureSession', data.secureSession);
+            localStorage.setItem('token', data.token);
         }).fail(function(f) {
             console.log(f.responseText);
         });

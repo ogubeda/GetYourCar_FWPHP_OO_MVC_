@@ -26,4 +26,8 @@ class profile_model {
     public function deleteUser_profile($args) {
         return $this -> bll -> deleteUser_profile_BLL($args);
     }// end_deleteUser_profile
+
+    public function getUserPurchases_profile($args) {
+        return $this -> bll -> getUserPurchases_profile_BLL($args);
+    }// end_getUserPurchases_profile
 }// end_profile_model

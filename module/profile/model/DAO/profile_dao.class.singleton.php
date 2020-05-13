@@ -29,5 +29,12 @@ class profile_dao {
     function deleteUser($username) {
         //////
         return db::query() -> delete('users') -> where(['id_user' => [$username]]) -> execute() -> toJSON() -> getResolve(); 
-    }// end_deleteUser
+    }// end_deleteUserç
+
+    function selectPurchases($username) {
+        return db::query() -> select(['*'], 'purchases')
+                            -> join([['allCars' => 'carPlate', 'purchases' => 'carPlate']], 'INNER') 
+                            -> where(['username' => [$username]]) 
+                            -> execute() -> queryToArray(true) -> toJSON() -> getResolve(); 
+    }// end_selectPurchases
 }// end_profile_dao

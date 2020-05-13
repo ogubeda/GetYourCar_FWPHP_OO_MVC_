@@ -17,4 +17,8 @@ class controller_profile {
     function deleteProfile() {
         echo common::accessModel('profile_model', 'deleteUser_profile', [$_POST['JWT'], $_SESSION['JWT_Secret']]);
     }// end_deleteProfile
+
+    function showPurchases() {
+        echo common::accessModel('profile_model', 'getUserPurchases_profile', [$_POST['JWT'], $_SESSION['JWT_Secret']]);
+    }// end_showPurchases
 }// end_controller_profile

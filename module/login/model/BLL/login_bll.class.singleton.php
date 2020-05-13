@@ -28,10 +28,7 @@ class login_bll {
     public function accessUser_login_BLL($args) {
         $user = $this -> dao -> selectUserData($args[0]);
         if (password_verify($args[1], $user['password'])) {
-            $secure = common::generate_Token_secure(20);
-            $jwt = jwt_process::encode($secure, $user['id_user']);
-            loadSession($secure);
-            return json_encode(array('secureSession' => md5(session_id()), 'jwt' => $jwt));
+            return self::generateSessionJWT(common::generate_Token_secure(20), $user['id_user']);
         }// end_if
         return 'Fail';
     }// end_if
@@ -42,11 +39,7 @@ class login_bll {
             $result = $this -> dao -> insertClientUser($args['sub'], $args['nickname'], $args['email'],'NULL', $args['picture'], 'NULL', 1);
         }// end_if
         if ($result) {
-            $user = $this -> dao -> selectUserData($args['sub']);
-            $secure = common::generate_Token_secure(20);
-            loadSession($secure);
-            $jwt = jwt_process::encode($secure, $user['id_user']);
-            return json_encode(array('secureSession' => md5(session_id()), 'jwt' => $jwt));
+            return self::generateSessionJWT(common::generate_Token_secure(20), $this -> dao -> selectUserData($args['sub'])['id_user']);
         }// end_if
         return 'Empty';
     }// end_acessUserSocial_login_BLL
@@ -89,4 +82,10 @@ class login_bll {
         $user['jwt'] = jwt_process::encode($secure, $userName);
         return json_encode($user);
     }// end_getUserData_login_BLL
+
+    private static function generateSessionJWT($secret, $user) {
+        $jwt = jwt_process::encode($secret, $user);
+        loadSession($secret);
+        return json_encode(array('secureSession' => md5(session_id()), 'jwt' => $jwt));
+    }// end_regenerateToken
 }// end_login_bll

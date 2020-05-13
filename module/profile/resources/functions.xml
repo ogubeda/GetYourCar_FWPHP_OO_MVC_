@@ -16,4 +16,8 @@
         <name>deleteProfile</name>
         <uri>deleteProfile</uri>
     </function>
+    <function>
+        <name>showPurchases</name>
+        <uri>showPurchases</uri>
+    </function>
 </functions>

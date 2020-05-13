@@ -188,7 +188,7 @@ function handleAuthentication() {
             setSession(authResult);
         }else if (err) {
             console.log(err);
-        }
+        }// end_else
     });
 }// end_handleAuthentication
 
@@ -201,7 +201,9 @@ function setSession(authResult) {
                     friendlyURL('?page=home').then(function(url) {
                         localStorage.setItem('secureSession', data.secureSession);
                         localStorage.setItem('token', data.jwt);
-                        window.location.href = url;
+                        webAuth.logout({
+                            returnTo: url
+                        });
                     });
                 }).catch(function(error) {
                     console.log(error);
@@ -360,7 +362,6 @@ var webAuth = new auth0.WebAuth({
   });
 
 $(document).ready(function() {
-    //////
     handleAuthentication();
     loadContent();
     addEventsLogin();

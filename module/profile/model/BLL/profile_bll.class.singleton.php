@@ -26,4 +26,8 @@ class profile_bll {
     public function deleteUser_profile_BLL($args) {
         return $this -> dao -> deleteUser(json_decode(jwt_process::decode($args[0], $args[1]), true)['name']);
     }// end_deleteUser_profile_BLL
+
+    public function getUserPurchases_profile_BLL($args) {
+        return $this -> dao -> selectPurchases(json_decode(jwt_process::decode($args[0], $args[1]), true)['name']);
+    }// end_getUserPurchases_profile_BLL
 }// end_profile_bll

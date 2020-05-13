@@ -12,7 +12,7 @@ class querys {
     private $limit;
     private $transactions;
 
-    public function select($values, $table, $distinct = false) {
+    public function select($values, $table, $distinct = false, $force = false) {
         $select = "SELECT ";
         if ($distinct == true) {
             $select .= "DISTINCT ";
