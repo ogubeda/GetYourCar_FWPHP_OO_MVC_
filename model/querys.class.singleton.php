@@ -142,7 +142,7 @@ class querys {
         return $this;
     }// end_count
 
-    public function execute() {
+    public function execute($transaction = false) {
         if (!empty($this -> join)) {
             $this -> query = $this -> query . $this -> join;
             $this -> join = "";
@@ -160,8 +160,20 @@ class querys {
             $this -> limit = "";
         }
         $connection = db::enable();
-        $this -> result = mysqli_query($connection, $this -> query);
-        $this -> error = mysqli_error($connection);
+        if ($transaction) {
+            mysqli_autocommit($connection, false);
+            foreach ($this -> transactions as $row) {
+                mysqli_query($connection, $row);
+            }// end_foreach
+            if (mysqli_commit($connection)) {
+                $this -> result = true;
+            }else {
+                $this -> result = false;
+            }// end_else
+        }else {
+            $this -> result = mysqli_query($connection, $this -> query);
+            $this -> error = mysqli_error($connection);
+        }// end_else
         db::close($connection);
         //////
         return $this;
@@ -196,6 +208,8 @@ class querys {
         return $this;
     }// end_toJSON
 
+    
+
     public function getResolve() {
         return $this -> resolve;
     }//end_getResolve
@@ -211,6 +225,20 @@ class querys {
     public function getResult() {
         return $this -> result;
     }// end_getResult
+
+    public function getTransactions() {
+        return $this -> transactions;
+    }// end_getTransactions
+
+    public function setTransaction() {
+        if (empty($this -> transactions)) {
+            $this -> transactions = [];
+        }// end_if
+        $this -> transactions[] = $this -> query;
+        $this -> query = "";
+        //////
+        return $this;
+    }// end_setTransaction
 
     public function setQuery($query) {
         $this -> query = $query;

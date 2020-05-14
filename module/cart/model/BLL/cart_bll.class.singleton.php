@@ -51,6 +51,24 @@ class cart_bll {
     }// end_removeDiscount_cart_BLL
 
     public function checkOut_cart_BLL($args) {
-        return $this -> dao -> addToPurchase(json_decode(jwt_process::decode($args[0], $args[1]), true)['name']);
+        $total = 0;
+        $price = 0;
+        $transaction = false;
+        $username = json_decode(jwt_process::decode($args[0], $args[1]), true)['name'];
+        $idPurchase = "$username" . date("Ymdhis");
+        //////
+        $valueCart = $this -> dao -> selectValueCart($username);
+        foreach($valueCart as $row) {
+            $price = $row['price'] * (1 + ($row['days'] / 10 - 0.1));
+            $total = $total + $price;
+            $disc = $row['discount'];
+        }// end_for
+        if ($disc > 0) {
+            $total = $total - ($total * $disc / 100);
+        }// end_if
+        if ($total <= $this -> dao -> selectUserMoney($username)['money']) {
+            $transaction = $this -> dao -> purchaseTransaction($username, $total, $idPurchase);
+        }// end_if
+        return $transaction;
     }// end_checkOut_cart_BLL
 }// end_cart_bll

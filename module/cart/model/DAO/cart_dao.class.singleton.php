@@ -9,38 +9,23 @@ class cart_dao {
         }// end_if
         return self::$_instance;
     }// end_getInstance
-    
-    function addToPurchase($username) {
-        //////
-        $total = 0;
-        $price = 0;
-        //////
-        $idPurchase = "$username" . date("Ymdhis");
-        $cartValue = "SELECT a.price, c.days, d.discount FROM allCars a INNER JOIN carts c ON a.carPlate = c.carPlate LEFT JOIN discounts d ON c.code_name = d.code_name WHERE username = '$username'";
+
+    function selectValueCart($username) {
+        return db::query() -> manual("SELECT a.price, c.days, d.discount FROM allCars a INNER JOIN carts c ON a.carPlate = c.carPlate LEFT JOIN discounts d ON c.code_name = d.code_name WHERE username = '$username'") -> execute() -> queryToArray(true) -> getResolve();
+    }// end_selectValueCart
+
+    function selectUserMoney($username) {
+        return db::query() -> select(['money'], 'users') -> where(['username' => [$username]]) -> execute() -> queryToArray() -> getResolve();
+    }// end_selectUserMoney
+
+    function purchaseTransaction($username, $total, $idPurchase) {
         $typedQuery = "INSERT INTO purchases (idpurchases, purchaseDate,carPlate, username, days, code_name) SELECT '$idPurchase', CURRENT_DATE, c.* FROM carts c WHERE username = '$username'";
+        $transaction = db::query() -> manual($typedQuery) -> setTransaction();
+        $transaction = $transaction -> update(['money' => "money - $total"], 'users') -> where(['username' => [$username]]) -> setTransaction();
+        $transaction = $transaction -> delete('carts') -> where(['username' => [$username]]) -> setTransaction() -> execute(true) -> toJSON() -> getResolve();
         //////
-        $valueMoney = db::query() -> select(['money'], 'users') -> where(['username' => [$username]]) -> execute() -> queryToArray() -> getResolve();
-        $valueCart = db::query() -> manual($cartValue) -> execute() -> queryToArray(true);
-        //////
-        foreach($valueCart -> getResolve() as $row) {
-            $price = $row['price'] * (1 + ($row['days'] / 10 - 0.1));
-            $total = $total + $price;
-            $disc = $row['discount'];
-        }// end_for
-        if ($disc > 0) {
-            $total = $total - ($total * $disc / 100);
-        }// end_if
-        if ($total <= $valueMoney['money']) {
-            $values = db::query() -> manual($typedQuery) -> execute();
-            if ($values -> getResult()) {
-                $credit = $valueMoney['money'] - $total;
-                $test = db::query() -> update(['money' => $credit], 'users') -> where(['username' => [$username]]) -> execute() -> getResult();
-                db::query() -> delete('carts') -> where(['username' => [$username]]) -> execute();
-            }// end_if
-        }// end_if
-        //////
-        return $values -> toJSON() -> getResolve();
-    }// end_addToPurchase
+        return $transaction;
+    }// end_purchaseTransaction
 
     function saveCart($carPlate, $days, $username) {
         if (db::query() -> insert([['carPlate' => $carPlate, 'username' => $username, 'days' => $days, 'code_name' => 'NULL']], 'carts') -> execute() -> getResult()) {
